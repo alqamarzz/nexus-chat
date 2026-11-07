@@ -78,39 +78,34 @@ export default function RegisterPage() {
   const onSubmit = async (data: RegisterFormData) => {
     setIsLoading(true)
     try {
-      const supabase = createClient()
-      const { data: authData, error: authError } = await supabase.auth.signUp({
-        email: data.email,
-        password: data.password,
-        options: {
-          data: {
-            full_name: data.fullName,
-            username: data.username,
-            avatar_url: selectedAvatar,
-          },
-        },
+      const res = await fetch('/api/auth/signup', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: data.email,
+          password: data.password,
+          fullName: data.fullName,
+          username: data.username,
+          avatarUrl: selectedAvatar,
+        }),
       })
 
-      if (authError) {
-        toast.error(authError.message)
+      const result = await res.json()
+
+      if (!res.ok) {
+        if (result.hint) {
+          toast.error(`${result.error} ${result.hint}`, { duration: 9000 })
+        } else {
+          toast.error(result.error || 'Failed to create account')
+        }
         return
       }
 
-      // Check if user profile was created or create/update it
-      if (authData.user) {
-        await supabase.from('profiles').upsert({
-          id: authData.user.id,
-          full_name: data.fullName,
-          username: data.username.toLowerCase(),
-          avatar_url: selectedAvatar,
-          is_online: true,
-          last_seen: new Date().toISOString(),
-        })
-      }
-
-      // Check if session was returned or email confirmation is needed
-      if (!authData.session) {
-        toast.success('Account created! Please check your email inbox to verify your account, then sign in.')
+      if (result.needsEmailConfirmation) {
+        toast.success(
+          result.message ||
+            'Account created! Please check your email to verify, or disable email confirmations in Supabase to login instantly.'
+        )
         router.push('/login')
       } else {
         toast.success('Account created successfully! Welcome to Nexus.')
