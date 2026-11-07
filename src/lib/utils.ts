@@ -56,8 +56,17 @@ export function formatFileSize(bytes: number): string {
 /**
  * Returns true if the given MIME type represents an image file.
  */
-export function isImageFile(mimeType: string): boolean {
+export function isImageFile(mimeType?: string | null): boolean {
+  if (!mimeType) return false
   return mimeType.startsWith('image/')
+}
+
+/**
+ * Returns true if the given MIME type represents a video file.
+ */
+export function isVideoFile(mimeType?: string | null): boolean {
+  if (!mimeType) return false
+  return mimeType.startsWith('video/')
 }
 
 /**

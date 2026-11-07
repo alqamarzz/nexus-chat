@@ -120,6 +120,30 @@ export function useMessages(conversationId: string): UseMessagesReturn {
       .on(
         'postgres_changes',
         {
+          event: 'INSERT',
+          schema: 'public',
+          table: 'file_attachments',
+        },
+        async (payload: any) => {
+          const newAtt = payload.new
+          if (newAtt?.message_id) {
+            const { data } = await supabase
+              .from('messages')
+              .select(
+                `*, sender:profiles(*), reactions:message_reactions(*, profile:profiles(*)), attachments:file_attachments(*), reply_to:messages!reply_to_id(*, sender:profiles(*))`
+              )
+              .eq('id', newAtt.message_id)
+              .single()
+
+            if (data) {
+              updateMessage(conversationId, newAtt.message_id, data as Message)
+            }
+          }
+        }
+      )
+      .on(
+        'postgres_changes',
+        {
           event: 'UPDATE',
           schema: 'public',
           table: 'messages',
@@ -245,9 +269,20 @@ export function useMessages(conversationId: string): UseMessagesReturn {
 
       // If there are attachments, insert them
       if (payload.attachments?.length && msg) {
-        await supabase.from('file_attachments').insert(
-          payload.attachments.map((att) => ({ ...att, message_id: msg.id }))
-        )
+        const { data: insertedAtts, error: attError } = await supabase
+          .from('file_attachments')
+          .insert(
+            payload.attachments.map((att) => ({ ...att, message_id: msg.id }))
+          )
+          .select('*')
+
+        if (attError) {
+          console.error('[useMessages] file_attachments insert error:', attError)
+        } else if (insertedAtts?.length) {
+          updateMessage(conversationId, msg.id, {
+            attachments: insertedAtts as any,
+          })
+        }
       }
     },
     [user, conversationId, supabase, addMessage]

@@ -20,6 +20,7 @@ import { MessageInput } from './MessageInput'
 import { Avatar } from '@/components/ui/Avatar'
 import { Message } from '@/types'
 import { toast } from 'sonner'
+import { isImageFile, isVideoFile } from '@/lib/utils'
 
 export function ConversationView() {
   const params = useParams()
@@ -192,11 +193,65 @@ export function ConversationView() {
       }
     } else {
       // Standard Supabase messaging
+      const uploadedAttachments: Array<{
+        url: string
+        name: string
+        size: number
+        mime_type: string
+      }> = []
+      let messageType: 'text' | 'image' | 'file' = 'text'
+
+      if (files && files.length > 0) {
+        const uploadToast = toast.loading(`Uploading ${files.length} file${files.length > 1 ? 's' : ''}...`)
+        try {
+          for (const file of files) {
+            const formData = new FormData()
+            formData.append('file', file)
+            if (profile.id) formData.append('userId', profile.id)
+
+            const uploadRes = await fetch('/api/upload', {
+              method: 'POST',
+              body: formData,
+            })
+            const uploadData = await uploadRes.json()
+
+            if (!uploadRes.ok || !uploadData.url) {
+              throw new Error(uploadData.error || `Failed to upload ${file.name}`)
+            }
+
+            uploadedAttachments.push({
+              url: uploadData.url,
+              name: uploadData.name || file.name,
+              size: uploadData.size || file.size,
+              mime_type: uploadData.mime_type || file.type || 'application/octet-stream',
+            })
+          }
+          toast.dismiss(uploadToast)
+        } catch (uploadErr: unknown) {
+          toast.dismiss(uploadToast)
+          const msg = uploadErr instanceof Error ? uploadErr.message : 'Upload failed'
+          toast.error(msg)
+          return
+        }
+
+        const hasVideo = uploadedAttachments.some((att) => isVideoFile(att.mime_type))
+        const hasImage = uploadedAttachments.some((att) => isImageFile(att.mime_type))
+        messageType = hasVideo ? 'file' : hasImage ? 'image' : 'file'
+      }
+
+      // Ensure content is never empty (satisfies SQL constraint: content_not_empty)
+      const finalContent =
+        content.trim() ||
+        (uploadedAttachments.length > 0 ? uploadedAttachments[0].name : '')
+
+      if (!finalContent && uploadedAttachments.length === 0) return
+
       await sendMessage({
         conversation_id: conversationId,
-        content,
+        content: finalContent,
         reply_to_id: replyToId,
-        type: files && files.length > 0 ? 'image' : 'text',
+        type: messageType,
+        attachments: uploadedAttachments,
       })
     }
   }

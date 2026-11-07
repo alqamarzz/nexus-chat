@@ -5,7 +5,7 @@ import { motion } from 'framer-motion'
 import { Check, CheckCheck, Bot, FileText, Download, Smile, Trash2, Edit2, Reply } from 'lucide-react'
 import { Message } from '@/types'
 import { Avatar } from '@/components/ui/Avatar'
-import { formatMessageTime, formatFileSize, isImageFile } from '@/lib/utils'
+import { formatMessageTime, formatFileSize, isImageFile, isVideoFile } from '@/lib/utils'
 
 interface MessageBubbleProps {
   message: Message
@@ -135,13 +135,24 @@ export function MessageBubble({
                   {message.attachments.map((att) => (
                     <div key={att.id} className="overflow-hidden rounded-lg">
                       {isImageFile(att.mime_type) ? (
-                        <a href={att.url} target="_blank" rel="noopener noreferrer">
+                        <a href={att.url} target="_blank" rel="noopener noreferrer" className="block">
                           <img
                             src={att.url}
                             alt={att.name}
-                            className="max-h-60 w-auto rounded-lg object-cover hover:opacity-95 transition-opacity"
+                            className="max-h-72 w-auto max-w-full rounded-lg object-contain bg-black/20 hover:opacity-95 transition-opacity"
+                            loading="lazy"
                           />
                         </a>
+                      ) : isVideoFile(att.mime_type) ? (
+                        <div className="rounded-lg overflow-hidden bg-black/40 max-w-full">
+                          <video
+                            src={att.url}
+                            controls
+                            preload="metadata"
+                            playsInline
+                            className="max-h-80 w-auto max-w-full rounded-lg"
+                          />
+                        </div>
                       ) : (
                         <a
                           href={att.url}
@@ -162,8 +173,14 @@ export function MessageBubble({
                 </div>
               )}
 
-              {/* Text Content */}
-              <div className="whitespace-pre-wrap">{message.content}</div>
+              {/* Text Content (hide if only a fallback filename placeholder for the attachment) */}
+              {Boolean(
+                message.content &&
+                  (!message.attachments?.length ||
+                    !message.attachments.some(
+                      (att) => att.name === message.content || message.content === 'Media attachment'
+                    ))
+              ) && <div className="whitespace-pre-wrap">{message.content}</div>}
 
               {/* Message Footer Info */}
               <div
