@@ -1,12 +1,18 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { Sparkles, MessageSquare, Bot, Users, ShieldCheck, Zap } from 'lucide-react'
 import { NewChatModal } from '@/components/chat/NewChatModal'
+import { useChatStore } from '@/stores/chat-store'
 
 export default function ChatOverviewPage() {
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const setActiveConversation = useChatStore((s) => s.setActiveConversation)
+
+  useEffect(() => {
+    setActiveConversation(null)
+  }, [setActiveConversation])
 
   return (
     <div className="flex-1 h-full flex flex-col items-center justify-center p-6 text-center relative overflow-hidden bg-gradient-to-b from-[#0e0e16] to-[#0a0a0f]">

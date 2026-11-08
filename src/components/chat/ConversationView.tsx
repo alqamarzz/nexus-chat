@@ -30,6 +30,8 @@ export function ConversationView() {
   const { profile } = useAuth()
   const conversations = useChatStore((s) => s.conversations)
   const toggleSidebar = useChatStore((s) => s.toggleSidebar)
+  const setActiveConversation = useChatStore((s) => s.setActiveConversation)
+  const markConversationAsRead = useChatStore((s) => s.markConversationAsRead)
 
   const isAI = conversationId === 'ai'
 
@@ -68,6 +70,24 @@ export function ConversationView() {
     : otherMember?.profile?.avatar_url
 
   const isOnline = isAI ? true : !isGroup && Boolean(otherMember?.profile?.is_online)
+
+  // Sync active conversation and mark as read immediately
+  useEffect(() => {
+    if (conversationId) {
+      setActiveConversation(conversationId)
+      markConversationAsRead(conversationId)
+    }
+    return () => {
+      setActiveConversation(null)
+    }
+  }, [conversationId, setActiveConversation, markConversationAsRead])
+
+  // Clear unread badge whenever new messages arrive or window is active
+  useEffect(() => {
+    if (conversationId && conversationId !== 'ai') {
+      markConversationAsRead(conversationId)
+    }
+  }, [conversationId, messages.length, markConversationAsRead])
 
   // Scroll to bottom on message changes
   const scrollToBottom = () => {

@@ -28,6 +28,7 @@ export function useMessages(conversationId: string): UseMessagesReturn {
     deleteMessage: deleteMessageInStore,
     setIsLoadingMessages,
     isLoadingMessages: isLoading,
+    markConversationAsRead,
   } = useChatStore()
   const channelRef = useRef<ReturnType<typeof supabase.channel> | null>(null)
   const [aiTyping, setAiTyping] = useState(false)
@@ -85,12 +86,19 @@ export function useMessages(conversationId: string): UseMessagesReturn {
   const markAsRead = useCallback(async () => {
     if (!user || !conversationId || conversationId === AI_CONVERSATION_ID) return
 
-    await supabase
-      .from('conversation_members')
-      .update({ last_read_at: new Date().toISOString() })
-      .eq('conversation_id', conversationId)
-      .eq('user_id', user.id)
-  }, [user, conversationId, supabase])
+    // Immediately clear in local store so badge disappears without lag
+    markConversationAsRead(conversationId)
+
+    try {
+      await supabase
+        .from('conversation_members')
+        .update({ last_read_at: new Date().toISOString() })
+        .eq('conversation_id', conversationId)
+        .eq('user_id', user.id)
+    } catch (err) {
+      console.error('[useMessages] markAsRead error:', err)
+    }
+  }, [user, conversationId, supabase, markConversationAsRead])
 
   // ── Realtime Subscription ────────────────────────────────────────────────────
 

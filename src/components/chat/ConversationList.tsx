@@ -7,6 +7,7 @@ import { Bot, Users } from 'lucide-react'
 import { Conversation, Profile } from '@/types'
 import { Avatar } from '@/components/ui/Avatar'
 import { formatMessageTime } from '@/lib/utils'
+import { useChatStore } from '@/stores/chat-store'
 
 interface ConversationListProps {
   conversations: Conversation[]
@@ -23,6 +24,7 @@ export function ConversationList({
 }: ConversationListProps) {
   const params = useParams()
   const activeId = params?.id as string | undefined
+  const markConversationAsRead = useChatStore((s) => s.markConversationAsRead)
 
   const filtered = conversations.filter((c) => {
     if (!searchQuery) return true
@@ -89,7 +91,10 @@ export function ConversationList({
           <Link
             key={conv.id}
             href={`/chat/${conv.id}`}
-            onClick={() => onSelectConversation?.(conv.id)}
+            onClick={() => {
+              markConversationAsRead(conv.id)
+              onSelectConversation?.(conv.id)
+            }}
             className={`flex items-center gap-3 p-2.5 rounded-xl transition-all ${
               isActive
                 ? 'bg-gradient-to-r from-indigo-500/15 to-violet-500/15 border border-indigo-500/30 text-white'
@@ -134,7 +139,7 @@ export function ConversationList({
                     'No messages yet'
                   )}
                 </p>
-                {conv.unread_count > 0 && (
+                {conv.unread_count > 0 && !isActive && (
                   <span className="ml-2 px-1.5 py-0.5 text-[10px] font-bold bg-indigo-500 text-white rounded-full min-w-4 text-center">
                     {conv.unread_count}
                   </span>

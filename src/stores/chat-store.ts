@@ -94,7 +94,17 @@ export const useChatStore = create<ChatState>()(
           'removeConversation'
         ),
 
-      setActiveConversation: (id) => set({ activeConversationId: id }, false, 'setActiveConversation'),
+      setActiveConversation: (id) =>
+        set(
+          (state) => ({
+            activeConversationId: id,
+            conversations: id
+              ? state.conversations.map((c) => (c.id === id ? { ...c, unread_count: 0 } : c))
+              : state.conversations,
+          }),
+          false,
+          'setActiveConversation'
+        ),
 
       updateConversationLastMessage: (conversationId, message) =>
         set(

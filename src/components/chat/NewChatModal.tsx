@@ -69,6 +69,19 @@ export function NewChatModal({ isOpen, onClose }: NewChatModalProps) {
 
   const startDM = async (otherUser: Profile) => {
     if (!currentUser) return
+
+    // Reuse existing DM if one already exists
+    const existing = useChatStore.getState().conversations.find((c) => {
+      if (c.type !== 'dm') return false
+      return c.members?.some((m) => m.user_id === otherUser.id)
+    })
+
+    if (existing) {
+      onClose()
+      router.push(`/chat/${existing.id}`)
+      return
+    }
+
     setIsCreating(true)
     try {
       const supabase = createClient()
@@ -92,6 +105,32 @@ export function NewChatModal({ isOpen, onClose }: NewChatModalProps) {
         { conversation_id: convData.id, user_id: currentUser.id, role: 'owner' },
         { conversation_id: convData.id, user_id: otherUser.id, role: 'member' },
       ])
+
+      // Add to store so it appears in sidebar immediately
+      addConversation({
+        ...convData,
+        type: 'dm',
+        members: [
+          {
+            conversation_id: convData.id,
+            user_id: currentUser.id,
+            role: 'owner',
+            joined_at: new Date().toISOString(),
+            last_read_at: new Date().toISOString(),
+            profile: currentUser,
+          },
+          {
+            conversation_id: convData.id,
+            user_id: otherUser.id,
+            role: 'member',
+            joined_at: new Date().toISOString(),
+            last_read_at: null,
+            profile: otherUser,
+          },
+        ],
+        last_message: null,
+        unread_count: 0,
+      })
 
       onClose()
       router.push(`/chat/${convData.id}`)
@@ -142,6 +181,25 @@ export function NewChatModal({ isOpen, onClose }: NewChatModalProps) {
       ]
 
       await supabase.from('conversation_members').insert(membersToInsert)
+
+      addConversation({
+        ...convData,
+        type: 'group',
+        name: groupName.trim(),
+        members: membersToInsert.map((m) => ({
+          conversation_id: m.conversation_id,
+          user_id: m.user_id,
+          role: m.role as any,
+          joined_at: new Date().toISOString(),
+          last_read_at: m.user_id === currentUser.id ? new Date().toISOString() : null,
+          profile:
+            m.user_id === currentUser.id
+              ? currentUser
+              : users.find((u) => u.id === m.user_id) || ({} as any),
+        })),
+        last_message: null,
+        unread_count: 0,
+      })
 
       toast.success('Group created!')
       onClose()

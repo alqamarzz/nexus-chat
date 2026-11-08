@@ -164,8 +164,47 @@ export function useConversations(): UseConversationsReturn {
             .single()
 
           if (fullMsg) {
-            updateConversation(msg.conversation_id, {
-              last_message: fullMsg as any,
+            const currentActiveId = useChatStore.getState().activeConversationId
+            const isCurrentlyActive = currentActiveId === msg.conversation_id
+
+            if (isCurrentlyActive) {
+              updateConversation(msg.conversation_id, {
+                last_message: fullMsg as any,
+                unread_count: 0,
+              })
+              if (user?.id) {
+                supabase
+                  .from('conversation_members')
+                  .update({ last_read_at: new Date().toISOString() })
+                  .eq('conversation_id', msg.conversation_id)
+                  .eq('user_id', user.id)
+              }
+            } else if (msg.sender_id !== user?.id) {
+              const currentConv = useChatStore.getState().conversations.find((c) => c.id === msg.conversation_id)
+              updateConversation(msg.conversation_id, {
+                last_message: fullMsg as any,
+                unread_count: (currentConv?.unread_count || 0) + 1,
+              })
+            } else {
+              updateConversation(msg.conversation_id, {
+                last_message: fullMsg as any,
+              })
+            }
+          }
+        }
+      )
+      .on(
+        'postgres_changes',
+        {
+          event: 'UPDATE',
+          schema: 'public',
+          table: 'conversation_members',
+          filter: `user_id=eq.${user.id}`,
+        },
+        (payload: any) => {
+          if (payload.new?.conversation_id && payload.new?.last_read_at) {
+            updateConversation(payload.new.conversation_id, {
+              unread_count: 0,
             })
           }
         }
