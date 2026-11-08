@@ -17,6 +17,7 @@ import { useAuth } from '@/hooks/useAuth'
 import { createClient } from '@/lib/supabase/client'
 import { Avatar } from '@/components/ui/Avatar'
 import { ThemeToggle } from '@/components/ui/ThemeToggle'
+import { BeanBagCoder } from '@/components/ui/BeanBagCoder'
 import { useTheme } from '@/context/ThemeContext'
 
 const AVATAR_PRESETS = [
@@ -253,10 +254,23 @@ export default function SettingsPage() {
           <div className="p-6 rounded-2xl bg-[#111118] border border-[#1e1e2e] space-y-6">
             <div className="flex items-center justify-between pb-4 border-b border-[#1e1e2e]">
               <div>
-                <h2 className="text-base font-semibold text-slate-100">Day & Night Theme</h2>
-                <p className="text-xs text-slate-400 mt-0.5">Toggle between radiant daylight and dark night obsidian</p>
+                <h2 className="text-base font-semibold text-slate-100">Bean Bag Nap & Studio Theme</h2>
+                <p className="text-xs text-slate-400 mt-0.5">Toggle between warm cream linen and cozy midnight studio</p>
               </div>
               <ThemeToggle size="md" showLabel />
+            </div>
+
+            {/* Cozy Coder preview */}
+            <div className="flex flex-col sm:flex-row items-center gap-6 p-4 rounded-xl bg-[#0a0a0f] border border-[#1e1e2e]">
+              <div className="shrink-0 w-full sm:w-48">
+                <BeanBagCoder size="sm" showStickyNote={false} showStatusBubble={false} />
+              </div>
+              <div className="space-y-1">
+                <h3 className="text-sm font-semibold text-slate-200">The Bean Bag Nap Aesthetic</h3>
+                <p className="text-xs text-slate-400 leading-relaxed">
+                  Inspired by Scrolltide&apos;s tactile clay workspace. Warm tactile cream in daylight, cozy midnight studio with warm lamp glow at night.
+                </p>
+              </div>
             </div>
 
             <div>
@@ -265,14 +279,14 @@ export default function SettingsPage() {
                 {[
                   {
                     id: 'dark',
-                    label: 'Night Mode',
-                    desc: 'Deep obsidian & indigo with electric glowing highlights',
+                    label: 'Night Studio',
+                    desc: 'Cozy roasted espresso & dark studio with warm ambient desk lamp glow',
                     badge: 'Night',
                   },
                   {
                     id: 'light',
-                    label: 'Day Mode',
-                    desc: 'Clean, radiant daylight interface with sunburst glow',
+                    label: 'Bean Bag Nap (Day)',
+                    desc: 'Warm tactile linen & organic cream inspired by cozy clay spaces',
                     badge: 'Day',
                   },
                 ].map((item) => (

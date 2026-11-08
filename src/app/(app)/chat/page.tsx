@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { Sparkles, MessageSquare, Bot, Users, ShieldCheck, Zap } from 'lucide-react'
 import { NewChatModal } from '@/components/chat/NewChatModal'
 import { ThemeToggle } from '@/components/ui/ThemeToggle'
+import { BeanBagCoder } from '@/components/ui/BeanBagCoder'
 import { useChatStore } from '@/stores/chat-store'
 
 export default function ChatOverviewPage() {
@@ -26,23 +27,18 @@ export default function ChatOverviewPage() {
       <div className="absolute w-[500px] h-[500px] bg-indigo-600/10 rounded-full blur-[120px] pointer-events-none -top-40 -left-40" />
       <div className="absolute w-[400px] h-[400px] bg-violet-600/10 rounded-full blur-[100px] pointer-events-none -bottom-20 -right-20" />
 
-      <div className="max-w-md w-full relative z-10 flex flex-col items-center">
-        {/* Animated App Emblem */}
-        <div className="relative mb-6">
-          <div className="w-20 h-20 rounded-3xl bg-gradient-to-tr from-indigo-500 via-violet-600 to-cyan-400 p-0.5 shadow-2xl shadow-indigo-500/25">
-            <div className="w-full h-full bg-[#0e0e17] rounded-[22px] flex items-center justify-center">
-              <Sparkles className="w-10 h-10 text-indigo-400" />
-            </div>
-          </div>
-          <div className="absolute -top-1 -right-1 w-6 h-6 rounded-full bg-emerald-500 border-4 border-[#0a0a0f] flex items-center justify-center" />
+      <div className="max-w-lg w-full relative z-10 flex flex-col items-center">
+        {/* Scrolltide Bean Bag Nap Animated Coder */}
+        <div className="mb-6 w-full flex justify-center">
+          <BeanBagCoder size="md" showStickyNote={true} stickyText="Nexus AI... connected." />
         </div>
 
         {/* Headline */}
         <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-white mb-2">
-          Welcome to <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-violet-400">Nexus</span>
+          Welcome to <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-500 via-indigo-400 to-violet-400">Nexus</span>
         </h1>
-        <p className="text-sm text-slate-400 mb-8 leading-relaxed">
-          Select an existing conversation from the sidebar, start a new chat with your teammates, or converse with Nexus AI.
+        <p className="text-sm text-slate-400 mb-6 leading-relaxed max-w-md">
+          For the ones who ship between naps. Select a conversation from the sidebar, start a new chat, or bounce ideas off Nexus AI.
         </p>
 
         {/* Quick action buttons */}

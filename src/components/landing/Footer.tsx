@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { MessageSquare, ArrowRight } from 'lucide-react';
+import { BeanBagCoder } from '@/components/ui/BeanBagCoder';
 
 const footerLinks = {
   Product: [
@@ -44,27 +45,38 @@ export default function Footer() {
   };
 
   return (
-    <footer className="relative bg-[#0a0a0f] border-t border-[#1e1e2e]">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+    <footer className="relative bg-[#0a0a0f] border-t border-[#1e1e2e] overflow-hidden transition-colors duration-500">
+      {/* Background warm lamp ambient glow */}
+      <div className="absolute -bottom-24 -left-24 w-96 h-96 bg-amber-500/10 dark:bg-amber-400/5 rounded-full blur-[100px] pointer-events-none" />
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 relative z-10">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-10 mb-16">
-          {/* Brand column */}
-          <div className="lg:col-span-2">
-            <Link href="/" className="inline-flex items-center gap-2 group mb-4">
-              <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-indigo-500 to-violet-600 flex items-center justify-center shadow-lg shadow-indigo-500/30 group-hover:shadow-indigo-500/50 transition-shadow">
-                <MessageSquare className="w-5 h-5 text-white" />
-              </div>
-              <span className="text-white font-bold text-xl tracking-tight">Nexus</span>
-            </Link>
-            <p className="text-gray-500 text-sm leading-relaxed mb-6 max-w-xs">
-              Real-time messaging and AI-powered conversations, all in one beautiful app. Chat at the speed of thought.
-            </p>
+          {/* Brand & Bean Bag Nap Character column */}
+          <div className="lg:col-span-2 flex flex-col justify-between">
+            <div>
+              <Link href="/" className="inline-flex items-center gap-2 group mb-2">
+                <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-indigo-500 to-violet-600 flex items-center justify-center shadow-lg shadow-indigo-500/30 group-hover:shadow-indigo-500/50 transition-shadow">
+                  <MessageSquare className="w-5 h-5 text-white" />
+                </div>
+                <span className="text-white font-bold text-2xl tracking-tight">Nexus</span>
+              </Link>
+              <p className="text-gray-500 text-sm leading-relaxed mb-4 max-w-xs font-medium">
+                For the ones who ship between naps. Real-time messaging and AI superpowers in one cozy app.
+              </p>
+            </div>
+
+            {/* Scrolltide Bean Bag Nap Animated Coder */}
+            <div className="my-2">
+              <BeanBagCoder size="sm" showStickyNote={true} stickyText="Shipping... between naps." />
+            </div>
+
             {/* Social links */}
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-3 mt-4">
               <a
                 href="https://github.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-9 h-9 rounded-lg border border-[#1e1e2e] bg-[#111118] flex items-center justify-center text-gray-500 hover:text-white hover:border-indigo-500/40 transition-all duration-200"
+                className="w-9 h-9 rounded-xl border border-[#1e1e2e] bg-[#111118] flex items-center justify-center text-gray-500 hover:text-white hover:border-indigo-500/40 transition-all duration-200"
                 aria-label="GitHub"
               >
                 <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
@@ -75,7 +87,7 @@ export default function Footer() {
                 href="https://x.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-9 h-9 rounded-lg border border-[#1e1e2e] bg-[#111118] flex items-center justify-center text-gray-500 hover:text-white hover:border-indigo-500/40 transition-all duration-200"
+                className="w-9 h-9 rounded-xl border border-[#1e1e2e] bg-[#111118] flex items-center justify-center text-gray-500 hover:text-white hover:border-indigo-500/40 transition-all duration-200"
                 aria-label="Twitter / X"
               >
                 <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
@@ -113,15 +125,15 @@ export default function Footer() {
             </div>
           ))}
 
-          {/* Newsletter */}
+          {/* Newsletter (Bean Bag Nap "Wake me for updates" style) */}
           <div className="lg:col-span-2">
-            <h4 className="text-white font-semibold text-sm mb-2">Stay in the loop</h4>
-            <p className="text-gray-500 text-sm mb-4">
-              Get product updates and tips delivered to your inbox.
+            <h4 className="text-white font-semibold text-base mb-1">Wake me for updates</h4>
+            <p className="text-gray-500 text-sm mb-4 leading-relaxed">
+              Release notes, new features, and the occasional thought from our sleepy but dedicated team.
             </p>
             {submitted ? (
-              <div className="flex items-center gap-2 px-4 py-3 rounded-xl bg-indigo-500/10 border border-indigo-500/20 text-indigo-300 text-sm">
-                ✓ You&apos;re subscribed! Welcome aboard.
+              <div className="flex items-center gap-2 px-4 py-3 rounded-xl bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 dark:text-indigo-300 text-sm">
+                ✓ You&apos;re subscribed! We will wake you when new features drop.
               </div>
             ) : (
               <form onSubmit={handleSubscribe} className="flex gap-2">
@@ -129,15 +141,16 @@ export default function Footer() {
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="your@email.com"
+                  placeholder="Enter your email"
                   required
-                  className="flex-1 min-w-0 px-4 py-2.5 rounded-xl bg-[#111118] border border-[#1e1e2e] text-white text-sm placeholder-gray-600 focus:outline-none focus:border-indigo-500/50 transition-colors"
+                  className="flex-1 min-w-0 px-4 py-2.5 rounded-xl bg-[#111118] border border-[#1e1e2e] text-white text-sm placeholder-gray-500 focus:outline-none focus:border-indigo-500/50 transition-colors"
                 />
                 <button
                   type="submit"
-                  className="px-4 py-2.5 rounded-xl bg-gradient-to-r from-indigo-500 to-violet-600 text-white hover:from-indigo-400 hover:to-violet-500 transition-all duration-200 flex-shrink-0"
+                  className="px-5 py-2.5 rounded-xl bg-[#171513] text-white dark:bg-white dark:text-black font-semibold text-sm hover:opacity-90 transition-all duration-200 flex items-center gap-1.5 flex-shrink-0 shadow-md"
                   aria-label="Subscribe"
                 >
+                  <span>Subscribe</span>
                   <ArrowRight className="w-4 h-4" />
                 </button>
               </form>

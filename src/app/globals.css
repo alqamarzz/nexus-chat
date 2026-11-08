@@ -4,40 +4,40 @@
    Design System Custom Properties
    ============================================================ */
 :root {
-  --background: #0a0a0f;
-  --surface: #111118;
-  --surface-2: #16161f;
-  --border: #1e1e2e;
-  --border-light: rgba(30, 30, 46, 0.5);
+  --background: #100f14;
+  --surface: #18171f;
+  --surface-2: #211f2a;
+  --border: #2b2837;
+  --border-light: rgba(43, 40, 55, 0.6);
   --primary: #6366f1;
   --primary-dark: #4f46e5;
   --primary-light: #818cf8;
-  --accent: #06b6d4;
-  --accent-dark: #0891b2;
+  --accent: #f59e0b;
+  --accent-dark: #d97706;
   --success: #10b981;
   --warning: #f59e0b;
   --danger: #ef4444;
-  --text-primary: #f8fafc;
-  --text-secondary: #94a3b8;
-  --text-muted: #64748b;
+  --text-primary: #f6f4ee;
+  --text-secondary: #a8a29e;
+  --text-muted: #78716c;
 }
 
-/* Light Theme Variables */
+/* Light Theme Variables — Bean Bag Nap Warm Cream & Clay */
 html.light,
 [data-theme="light"] {
-  --background: #f8fafc;
-  --surface: #ffffff;
-  --surface-2: #f1f5f9;
-  --border: #e2e8f0;
-  --border-light: rgba(226, 232, 240, 0.8);
-  --primary: #6366f1;
-  --primary-dark: #4f46e5;
-  --primary-light: #4338ca;
-  --accent: #0284c7;
-  --accent-dark: #0369a1;
-  --text-primary: #0f172a;
-  --text-secondary: #475569;
-  --text-muted: #94a3b8;
+  --background: #ede7df;
+  --surface: #f7f3ec;
+  --surface-2: #e5dfd6;
+  --border: #dcd4c8;
+  --border-light: rgba(220, 212, 200, 0.7);
+  --primary: #4f46e5;
+  --primary-dark: #3730a3;
+  --primary-light: #6366f1;
+  --accent: #d97706;
+  --accent-dark: #b45309;
+  --text-primary: #1c1917;
+  --text-secondary: #57534e;
+  --text-muted: #8c847a;
 }
 
 /* ============================================================
@@ -88,6 +88,42 @@ body {
   font-family: var(--font-inter, system-ui, sans-serif);
   min-height: 100vh;
   line-height: 1.6;
+  position: relative;
+}
+
+/* Organic Ambient Desk Lamp Glow (Bean Bag Nap late-night studio & morning cream atmosphere) */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background: 
+    radial-gradient(ellipse 55% 45% at 10% 12%, rgba(245, 158, 11, 0.08), transparent 60%),
+    radial-gradient(ellipse 50% 40% at 88% 85%, rgba(99, 102, 241, 0.06), transparent 70%);
+  transition: opacity 0.5s ease;
+}
+
+html.light body::before {
+  background: 
+    radial-gradient(ellipse 65% 50% at 8% 10%, rgba(245, 158, 11, 0.14), transparent 65%),
+    radial-gradient(ellipse 55% 45% at 92% 88%, rgba(217, 119, 6, 0.06), transparent 70%),
+    radial-gradient(circle at 50% 35%, rgba(255, 255, 255, 0.4), transparent 60%);
+}
+
+/* Tactile Linen / Paper Noise Texture */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.025;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+}
+
+html.light body::after {
+  opacity: 0.038;
 }
 
 /* ============================================================
@@ -328,19 +364,21 @@ pre {
 }
 
 /* ============================================================
-   Light / Day Mode Overrides
+   Bean Bag Nap / Cozy Studio Theme Overrides
    ============================================================ */
+
+/* LIGHT MODE: Authentic Bean Bag Nap Warm Cream & Clay Linen */
 html.light body {
   background-color: var(--background);
   color: var(--text-primary);
 }
 
 html.light .bg-\[\#0a0a0f\] {
-  background-color: #f8fafc !important;
+  background-color: #ede7df !important;
 }
 
 html.light .bg-\[\#111118\] {
-  background-color: #ffffff !important;
+  background-color: #f7f3ec !important;
 }
 
 html.light .bg-\[\#16161f\],
@@ -348,90 +386,121 @@ html.light .bg-\[\#161622\],
 html.light .bg-\[\#151520\],
 html.light .bg-\[\#181824\],
 html.light .bg-\[\#1a1a26\] {
-  background-color: #f1f5f9 !important;
+  background-color: #e5dfd6 !important;
 }
 
 html.light .bg-\[\#0d0d14\],
 html.light .bg-\[\#0d0d14\]\/80 {
-  background-color: #f8fafc !important;
+  background-color: #efe9e1 !important;
 }
 
-html.light .bg-\[\#12121b\] {
-  background-color: #f1f5f9 !important;
+html.light .bg-\[\#12121b\],
+html.light .bg-\[\#13131c\] {
+  background-color: #e8e2d8 !important;
 }
 
 html.light .bg-\[\#111118\]\/80 {
-  background-color: rgba(255, 255, 255, 0.88) !important;
+  background-color: rgba(247, 243, 236, 0.88) !important;
 }
 
 html.light .border-\[\#1e1e2e\],
 html.light .border-\[\#1e1e2e\]\/60,
 html.light .border-\[\#222232\],
 html.light .border-\[\#242436\] {
-  border-color: #e2e8f0 !important;
+  border-color: #dcd4c8 !important;
 }
 
 html.light .border-\[\#2a2a3e\] {
-  border-color: #cbd5e1 !important;
+  border-color: #d0c7bb !important;
 }
 
-/* Text overrides in light mode */
+/* Warm text overrides in light mode */
 html.light .text-slate-100 {
-  color: #0f172a !important;
+  color: #1c1917 !important;
 }
 
 html.light .text-slate-200 {
-  color: #1e293b !important;
+  color: #292524 !important;
 }
 
 html.light .text-slate-300 {
-  color: #334155 !important;
+  color: #44403c !important;
 }
 
 html.light .text-slate-400 {
-  color: #64748b !important;
+  color: #6e6760 !important;
 }
 
 html.light .text-slate-500 {
-  color: #94a3b8 !important;
+  color: #8c847a !important;
 }
 
 /* Input fields in light mode */
 html.light input.bg-\[\#0a0a0f\],
 html.light textarea.bg-\[\#0a0a0f\],
-html.light input.bg-\[\#0e0e14\] {
-  background-color: #ffffff !important;
-  color: #0f172a !important;
-  border-color: #cbd5e1 !important;
+html.light input.bg-\[\#0e0e14\],
+html.light input.bg-\[\#111118\] {
+  background-color: #faf7f2 !important;
+  color: #1c1917 !important;
+  border-color: #dcd4c8 !important;
 }
 
 /* Message bubbles in light mode */
 html.light .bg-\[\#1e1e2e\] {
-  background-color: #e2e8f0 !important;
+  background-color: #e5dfd6 !important;
 }
 
 /* Glassmorphism in light mode */
 html.light .glass {
-  background: rgba(255, 255, 255, 0.85) !important;
-  border-color: rgba(226, 232, 240, 0.8) !important;
+  background: rgba(247, 243, 236, 0.85) !important;
+  border-color: rgba(220, 212, 200, 0.8) !important;
 }
 
 html.light .glass-light {
-  background: rgba(248, 250, 252, 0.7) !important;
-  border-color: rgba(226, 232, 240, 0.6) !important;
+  background: rgba(237, 231, 223, 0.7) !important;
+  border-color: rgba(220, 212, 200, 0.6) !important;
 }
 
 /* Scrollbar in light mode */
 html.light ::-webkit-scrollbar-track {
-  background: #f1f5f9;
+  background: #ede7df;
 }
 html.light ::-webkit-scrollbar-thumb {
-  background: #cbd5e1;
+  background: #dcd4c8;
 }
 html.light ::-webkit-scrollbar-thumb:hover {
-  background: #94a3b8;
+  background: #baaFA0;
 }
 html.light * {
-  scrollbar-color: #cbd5e1 #f1f5f9;
+  scrollbar-color: #dcd4c8 #ede7df;
+}
+
+/* DARK MODE: Late-Night Studio Atmosphere */
+html.dark .bg-\[\#0a0a0f\],
+:root:not(.light) .bg-\[\#0a0a0f\] {
+  background-color: #100f14 !important;
+}
+
+html.dark .bg-\[\#111118\],
+:root:not(.light) .bg-\[\#111118\] {
+  background-color: #18171f !important;
+}
+
+html.dark .bg-\[\#16161f\],
+html.dark .bg-\[\#161622\],
+html.dark .bg-\[\#181824\],
+:root:not(.light) .bg-\[\#181824\] {
+  background-color: #201e28 !important;
+}
+
+html.dark .bg-\[\#0d0d14\],
+:root:not(.light) .bg-\[\#0d0d14\] {
+  background-color: #131218 !important;
+}
+
+html.dark .border-\[\#1e1e2e\],
+html.dark .border-\[\#1e1e2e\]\/60,
+:root:not(.light) .border-\[\#1e1e2e\] {
+  border-color: #2b2837 !important;
 }
 
