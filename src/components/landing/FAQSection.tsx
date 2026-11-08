@@ -8,7 +8,7 @@ const faqs = [
   {
     question: 'Is Nexus free to use?',
     answer:
-      'Yes! Nexus has a generous free tier that includes 1:1 direct messages, up to 100 messages per day, and 100MB of storage. You can upgrade to Pro or Team for more features and higher limits.',
+      'Yes! Nexus is completely free to use, including 1:1 direct messages, group chats, AI assistant features, and cloud storage.',
   },
   {
     question: 'How does the AI assistant work?',
@@ -28,17 +28,17 @@ const faqs = [
   {
     question: 'How many people can be in a group chat?',
     answer:
-      'On the Free plan, group chats are not available. Pro users can create group chats with up to 50 members. Team plan users can have up to 500 members per channel with advanced moderation tools.',
+      'Nexus supports group chats with up to 500 members per channel with advanced moderation tools and real-time collaboration.',
   },
   {
     question: 'What file types can I share?',
     answer:
-      'You can share images (PNG, JPG, GIF, WebP), documents (PDF, DOCX, XLSX, PPTX), code files, archives (ZIP, RAR), and videos (MP4, WebM) up to your plan\'s storage limit. Files are previewed inline when possible.',
+      'You can share images (PNG, JPG, GIF, WebP), documents (PDF, DOCX, XLSX, PPTX), code files, archives (ZIP, RAR), and videos (MP4, WebM). Files are previewed inline when possible.',
   },
   {
     question: 'Can I export my chat history?',
     answer:
-      'Yes! Pro and Team users can export their full chat history in JSON or CSV format from the account settings. Free users can export the last 30 days of messages. Data exports are delivered as a downloadable archive.',
+      'Yes! You can export your full chat history in JSON or CSV format from the account settings. Data exports are delivered as a downloadable archive.',
   },
 ];
 

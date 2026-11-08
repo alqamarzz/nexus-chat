@@ -83,7 +83,7 @@ export default function CTASection() {
           </div>
 
           <p className="mt-6 text-sm text-gray-600">
-            No credit card required · Free forever plan · Cancel anytime
+            No credit card required · Free forever · Set up in 2 minutes
           </p>
         </motion.div>
       </div>

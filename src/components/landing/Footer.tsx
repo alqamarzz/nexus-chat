@@ -7,7 +7,6 @@ import { MessageSquare, ArrowRight } from 'lucide-react';
 const footerLinks = {
   Product: [
     { label: 'Features', href: '#features' },
-    { label: 'Pricing', href: '#pricing' },
     { label: 'How It Works', href: '#how-it-works' },
     { label: 'AI Assistant', href: '#ai-spotlight' },
   ],
