@@ -9,6 +9,7 @@ import { z } from 'zod'
 import { toast } from 'sonner'
 import { createClient } from '@/lib/supabase/client'
 import { AuthTransitionScreen } from '@/components/ui/AuthTransitionScreen'
+import { GoogleOAuthModal } from '@/components/auth/GoogleOAuthModal'
 
 // ─── Schema ───────────────────────────────────────────────────────────────────
 
@@ -89,6 +90,7 @@ export default function LoginPage() {
   const [isLoading, setIsLoading] = useState(false)
   const [isGoogleLoading, setIsGoogleLoading] = useState(false)
   const [isTransitioning, setIsTransitioning] = useState(false)
+  const [isGoogleModalOpen, setIsGoogleModalOpen] = useState(false)
   const [userEmail, setUserEmail] = useState('')
 
   const {
@@ -121,13 +123,40 @@ export default function LoginPage() {
   const handleGoogleSignIn = async () => {
     setIsGoogleLoading(true)
     try {
-      const { error } = await supabase.auth.signInWithOAuth({
+      const { data, error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
           redirectTo: `${window.location.origin}/auth/callback`,
+          skipBrowserRedirect: true,
         },
       })
       if (error) throw error
+
+      if (data?.url) {
+        // Pre-check if Google provider is enabled in the Supabase project
+        try {
+          const checkRes = await fetch(data.url)
+          if (!checkRes.ok) {
+            const body = await checkRes.json().catch(() => ({}))
+            if (
+              body?.msg?.includes('Unsupported provider') ||
+              body?.error_code === 'validation_failed' ||
+              checkRes.status === 400
+            ) {
+              setIsGoogleModalOpen(true)
+              setIsGoogleLoading(false)
+              return
+            }
+          }
+        } catch {
+          // If check cannot connect, continue to redirect
+        }
+
+        window.location.href = data.url
+        return
+      }
+
+      setIsGoogleLoading(false)
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : 'Failed to sign in with Google'
       toast.error(message)
@@ -274,6 +303,17 @@ export default function LoginPage() {
           </Link>
         </p>
       </div>
+
+      <GoogleOAuthModal
+        isOpen={isGoogleModalOpen}
+        onClose={() => setIsGoogleModalOpen(false)}
+        onSuccessRedirect={(email) => {
+          setIsGoogleModalOpen(false)
+          setUserEmail(email)
+          setIsTransitioning(true)
+          window.location.href = '/chat'
+        }}
+      />
     </div>
   )
 }

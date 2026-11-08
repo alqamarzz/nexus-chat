@@ -10,6 +10,7 @@ import { toast } from 'sonner'
 import { createClient } from '@/lib/supabase/client'
 import { User, Mail, Lock, Sparkles, Check, ArrowRight } from 'lucide-react'
 import { AuthTransitionScreen } from '@/components/ui/AuthTransitionScreen'
+import { GoogleOAuthModal } from '@/components/auth/GoogleOAuthModal'
 
 const registerSchema = z
   .object({
@@ -125,23 +126,49 @@ export default function RegisterPage() {
     }
   }
 
+  const [isGoogleModalOpen, setIsGoogleModalOpen] = useState(false)
+
   const handleGoogleSignup = async () => {
     setIsGoogleLoading(true)
     try {
       const supabase = createClient()
-      const { error } = await supabase.auth.signInWithOAuth({
+      const { data, error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
           redirectTo: `${window.location.origin}/auth/callback`,
+          skipBrowserRedirect: true,
         },
       })
-      if (error) {
-        toast.error(error.message)
+      if (error) throw error
+
+      if (data?.url) {
+        // Pre-check if Google provider is enabled in the Supabase project
+        try {
+          const checkRes = await fetch(data.url)
+          if (!checkRes.ok) {
+            const body = await checkRes.json().catch(() => ({}))
+            if (
+              body?.msg?.includes('Unsupported provider') ||
+              body?.error_code === 'validation_failed' ||
+              checkRes.status === 400
+            ) {
+              setIsGoogleModalOpen(true)
+              setIsGoogleLoading(false)
+              return
+            }
+          }
+        } catch {
+          // If check fails, continue with redirect
+        }
+
+        window.location.href = data.url
+        return
       }
+
+      setIsGoogleLoading(false)
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : 'Google sign-up failed'
       toast.error(message)
-    } finally {
       setIsGoogleLoading(false)
     }
   }
@@ -314,6 +341,17 @@ export default function RegisterPage() {
           Sign In
         </Link>
       </p>
+
+      <GoogleOAuthModal
+        isOpen={isGoogleModalOpen}
+        onClose={() => setIsGoogleModalOpen(false)}
+        onSuccessRedirect={(email) => {
+          setIsGoogleModalOpen(false)
+          setCreatedName(email.split('@')[0])
+          setIsTransitioning(true)
+          window.location.href = '/chat'
+        }}
+      />
     </div>
   )
 }
