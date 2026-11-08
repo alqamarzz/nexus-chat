@@ -16,6 +16,8 @@ import { toast } from 'sonner'
 import { useAuth } from '@/hooks/useAuth'
 import { createClient } from '@/lib/supabase/client'
 import { Avatar } from '@/components/ui/Avatar'
+import { ThemeToggle } from '@/components/ui/ThemeToggle'
+import { useTheme } from '@/context/ThemeContext'
 
 const AVATAR_PRESETS = [
   'https://api.dicebear.com/7.x/bottts/svg?seed=nexus1',
@@ -40,8 +42,8 @@ export default function SettingsPage() {
   const [selectedAvatar, setSelectedAvatar] = useState('')
   const [isSaving, setIsSaving] = useState(false)
 
-  // Appearance & notifications toggles
-  const [theme, setTheme] = useState('dark')
+  // Appearance from global theme context
+  const { theme, setTheme } = useTheme()
   const [soundEnabled, setSoundEnabled] = useState(true)
   const [readReceipts, setReadReceipts] = useState(true)
 
@@ -89,17 +91,20 @@ export default function SettingsPage() {
     <div className="flex-1 h-full overflow-y-auto bg-[#0a0a0f] p-4 sm:p-8">
       <div className="max-w-3xl mx-auto">
         {/* Top bar */}
-        <div className="flex items-center gap-3 mb-6">
-          <button
-            onClick={() => router.push('/chat')}
-            className="p-2 rounded-xl text-slate-400 hover:text-white hover:bg-[#161622] transition-colors"
-          >
-            <ArrowLeft className="w-5 h-5" />
-          </button>
-          <div>
-            <h1 className="text-xl sm:text-2xl font-bold text-white">Settings</h1>
-            <p className="text-xs text-slate-400">Manage your profile, theme, and chat preferences</p>
+        <div className="flex items-center justify-between gap-3 mb-6">
+          <div className="flex items-center gap-3">
+            <button
+              onClick={() => router.push('/chat')}
+              className="p-2 rounded-xl text-slate-400 hover:text-white hover:bg-[#161622] transition-colors"
+            >
+              <ArrowLeft className="w-5 h-5" />
+            </button>
+            <div>
+              <h1 className="text-xl sm:text-2xl font-bold text-white">Settings</h1>
+              <p className="text-xs text-slate-400">Manage your profile, theme, and chat preferences</p>
+            </div>
           </div>
+          <ThemeToggle size="sm" />
         </div>
 
         {/* Tab navigation */}
@@ -246,29 +251,48 @@ export default function SettingsPage() {
         {/* Tab 2: Appearance */}
         {activeTab === 'appearance' && (
           <div className="p-6 rounded-2xl bg-[#111118] border border-[#1e1e2e] space-y-6">
-            <h2 className="text-base font-semibold text-slate-100">Theme Preferences</h2>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-              {[
-                { id: 'dark', label: 'Dark Obsidian', desc: 'Deep indigo & pure darkness' },
-                { id: 'oled', label: 'True Black', desc: 'Optimized for OLED displays' },
-                { id: 'midnight', label: 'Midnight Blue', desc: 'Subtle slate blue tones' },
-              ].map((item) => (
-                <div
-                  key={item.id}
-                  onClick={() => setTheme(item.id)}
-                  className={`p-4 rounded-xl border cursor-pointer transition-all ${
-                    theme === item.id
-                      ? 'bg-indigo-500/10 border-indigo-500'
-                      : 'bg-[#0a0a0f] border-[#1e1e2e] hover:border-[#2e2e42]'
-                  }`}
-                >
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="text-sm font-semibold text-slate-200">{item.label}</span>
-                    {theme === item.id && <Check className="w-4 h-4 text-indigo-400" />}
+            <div className="flex items-center justify-between pb-4 border-b border-[#1e1e2e]">
+              <div>
+                <h2 className="text-base font-semibold text-slate-100">Day & Night Theme</h2>
+                <p className="text-xs text-slate-400 mt-0.5">Toggle between radiant daylight and dark night obsidian</p>
+              </div>
+              <ThemeToggle size="md" showLabel />
+            </div>
+
+            <div>
+              <label className="block text-xs font-medium text-slate-400 mb-3">Color Mode</label>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {[
+                  {
+                    id: 'dark',
+                    label: 'Night Mode',
+                    desc: 'Deep obsidian & indigo with electric glowing highlights',
+                    badge: 'Night',
+                  },
+                  {
+                    id: 'light',
+                    label: 'Day Mode',
+                    desc: 'Clean, radiant daylight interface with sunburst glow',
+                    badge: 'Day',
+                  },
+                ].map((item) => (
+                  <div
+                    key={item.id}
+                    onClick={() => setTheme(item.id as 'dark' | 'light')}
+                    className={`p-4 rounded-xl border cursor-pointer transition-all ${
+                      theme === item.id
+                        ? 'bg-indigo-500/10 border-indigo-500 shadow-sm shadow-indigo-500/20'
+                        : 'bg-[#0a0a0f] border-[#1e1e2e] hover:border-[#2e2e42]'
+                    }`}
+                  >
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="text-sm font-semibold text-slate-200">{item.label}</span>
+                      {theme === item.id && <Check className="w-4 h-4 text-indigo-400" />}
+                    </div>
+                    <p className="text-xs text-slate-400">{item.desc}</p>
                   </div>
-                  <p className="text-xs text-slate-400">{item.desc}</p>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
           </div>
         )}

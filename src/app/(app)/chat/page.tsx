@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { Sparkles, MessageSquare, Bot, Users, ShieldCheck, Zap } from 'lucide-react'
 import { NewChatModal } from '@/components/chat/NewChatModal'
+import { ThemeToggle } from '@/components/ui/ThemeToggle'
 import { useChatStore } from '@/stores/chat-store'
 
 export default function ChatOverviewPage() {
@@ -16,6 +17,11 @@ export default function ChatOverviewPage() {
 
   return (
     <div className="flex-1 h-full flex flex-col items-center justify-center p-6 text-center relative overflow-hidden bg-gradient-to-b from-[#0e0e16] to-[#0a0a0f]">
+      {/* Top right Theme Toggle */}
+      <div className="absolute top-4 right-4 z-20">
+        <ThemeToggle size="sm" />
+      </div>
+
       {/* Background ambient glow */}
       <div className="absolute w-[500px] h-[500px] bg-indigo-600/10 rounded-full blur-[120px] pointer-events-none -top-40 -left-40" />
       <div className="absolute w-[400px] h-[400px] bg-violet-600/10 rounded-full blur-[100px] pointer-events-none -bottom-20 -right-20" />

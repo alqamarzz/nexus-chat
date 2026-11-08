@@ -1,3 +1,7 @@
+'use client'
+
+import { ThemeToggle } from '@/components/ui/ThemeToggle'
+
 export default function AuthLayout({
   children,
 }: {
@@ -5,6 +9,11 @@ export default function AuthLayout({
 }) {
   return (
     <div className="relative min-h-screen overflow-hidden bg-[#0a0a0f]">
+      {/* Top right Theme Toggle */}
+      <div className="absolute top-4 right-4 z-20">
+        <ThemeToggle size="sm" />
+      </div>
+
       {/* Animated gradient orbs */}
       <div
         className="pointer-events-none fixed inset-0"

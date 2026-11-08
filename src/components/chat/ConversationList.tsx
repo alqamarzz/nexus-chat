@@ -45,7 +45,7 @@ export function ConversationList({
         onClick={() => onSelectConversation?.('ai')}
         className={`flex items-center gap-3 p-2.5 rounded-xl transition-all ${
           activeId === 'ai'
-            ? 'bg-gradient-to-r from-indigo-500/15 to-violet-500/15 border border-indigo-500/30 text-white'
+            ? 'bg-gradient-to-r from-indigo-500/15 to-violet-500/15 border border-indigo-500/30 text-slate-100 font-semibold'
             : 'hover:bg-[#161622] text-slate-300'
         }`}
       >
@@ -97,7 +97,7 @@ export function ConversationList({
             }}
             className={`flex items-center gap-3 p-2.5 rounded-xl transition-all ${
               isActive
-                ? 'bg-gradient-to-r from-indigo-500/15 to-violet-500/15 border border-indigo-500/30 text-white'
+                ? 'bg-gradient-to-r from-indigo-500/15 to-violet-500/15 border border-indigo-500/30 text-slate-100 font-semibold'
                 : 'hover:bg-[#161622] text-slate-300'
             }`}
           >

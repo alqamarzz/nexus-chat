@@ -18,6 +18,7 @@ import { useChatStore } from '@/stores/chat-store'
 import { ConversationList } from './ConversationList'
 import { NewChatModal } from './NewChatModal'
 import { Avatar } from '@/components/ui/Avatar'
+import { ThemeToggle } from '@/components/ui/ThemeToggle'
 
 export function ChatSidebar() {
   const router = useRouter()
@@ -59,7 +60,8 @@ export function ChatSidebar() {
             <span className="font-bold text-lg text-white tracking-tight">Nexus</span>
           </Link>
 
-          <div className="flex items-center gap-1">
+          <div className="flex items-center gap-1.5">
+            <ThemeToggle size="sm" />
             <button
               onClick={() => setIsNewChatOpen(true)}
               className="p-2 rounded-xl text-slate-300 hover:text-white hover:bg-[#1a1a26] transition-colors"

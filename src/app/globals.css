@@ -22,6 +22,24 @@
   --text-muted: #64748b;
 }
 
+/* Light Theme Variables */
+html.light,
+[data-theme="light"] {
+  --background: #f8fafc;
+  --surface: #ffffff;
+  --surface-2: #f1f5f9;
+  --border: #e2e8f0;
+  --border-light: rgba(226, 232, 240, 0.8);
+  --primary: #6366f1;
+  --primary-dark: #4f46e5;
+  --primary-light: #4338ca;
+  --accent: #0284c7;
+  --accent-dark: #0369a1;
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --text-muted: #94a3b8;
+}
+
 /* ============================================================
    Tailwind v4 Theme Extension
    ============================================================ */
@@ -308,3 +326,112 @@ pre {
 .transition-all-normal {
   transition: all 0.3s ease;
 }
+
+/* ============================================================
+   Light / Day Mode Overrides
+   ============================================================ */
+html.light body {
+  background-color: var(--background);
+  color: var(--text-primary);
+}
+
+html.light .bg-\[\#0a0a0f\] {
+  background-color: #f8fafc !important;
+}
+
+html.light .bg-\[\#111118\] {
+  background-color: #ffffff !important;
+}
+
+html.light .bg-\[\#16161f\],
+html.light .bg-\[\#161622\],
+html.light .bg-\[\#151520\],
+html.light .bg-\[\#181824\],
+html.light .bg-\[\#1a1a26\] {
+  background-color: #f1f5f9 !important;
+}
+
+html.light .bg-\[\#0d0d14\],
+html.light .bg-\[\#0d0d14\]\/80 {
+  background-color: #f8fafc !important;
+}
+
+html.light .bg-\[\#12121b\] {
+  background-color: #f1f5f9 !important;
+}
+
+html.light .bg-\[\#111118\]\/80 {
+  background-color: rgba(255, 255, 255, 0.88) !important;
+}
+
+html.light .border-\[\#1e1e2e\],
+html.light .border-\[\#1e1e2e\]\/60,
+html.light .border-\[\#222232\],
+html.light .border-\[\#242436\] {
+  border-color: #e2e8f0 !important;
+}
+
+html.light .border-\[\#2a2a3e\] {
+  border-color: #cbd5e1 !important;
+}
+
+/* Text overrides in light mode */
+html.light .text-slate-100 {
+  color: #0f172a !important;
+}
+
+html.light .text-slate-200 {
+  color: #1e293b !important;
+}
+
+html.light .text-slate-300 {
+  color: #334155 !important;
+}
+
+html.light .text-slate-400 {
+  color: #64748b !important;
+}
+
+html.light .text-slate-500 {
+  color: #94a3b8 !important;
+}
+
+/* Input fields in light mode */
+html.light input.bg-\[\#0a0a0f\],
+html.light textarea.bg-\[\#0a0a0f\],
+html.light input.bg-\[\#0e0e14\] {
+  background-color: #ffffff !important;
+  color: #0f172a !important;
+  border-color: #cbd5e1 !important;
+}
+
+/* Message bubbles in light mode */
+html.light .bg-\[\#1e1e2e\] {
+  background-color: #e2e8f0 !important;
+}
+
+/* Glassmorphism in light mode */
+html.light .glass {
+  background: rgba(255, 255, 255, 0.85) !important;
+  border-color: rgba(226, 232, 240, 0.8) !important;
+}
+
+html.light .glass-light {
+  background: rgba(248, 250, 252, 0.7) !important;
+  border-color: rgba(226, 232, 240, 0.6) !important;
+}
+
+/* Scrollbar in light mode */
+html.light ::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+html.light ::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+}
+html.light ::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+html.light * {
+  scrollbar-color: #cbd5e1 #f1f5f9;
+}
+

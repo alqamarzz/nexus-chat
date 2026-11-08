@@ -18,6 +18,7 @@ import { useChatStore } from '@/stores/chat-store'
 import { MessageBubble } from './MessageBubble'
 import { MessageInput } from './MessageInput'
 import { Avatar } from '@/components/ui/Avatar'
+import { ThemeToggle } from '@/components/ui/ThemeToggle'
 import { Message } from '@/types'
 import { toast } from 'sonner'
 import { isImageFile, isVideoFile } from '@/lib/utils'
@@ -341,7 +342,8 @@ export function ConversationView() {
         </div>
 
         {/* Action icons */}
-        <div className="flex items-center gap-1 text-slate-400">
+        <div className="flex items-center gap-1.5 text-slate-400">
+          <ThemeToggle size="sm" />
           <button
             onClick={() => toast.info('Voice calling coming soon to Nexus Pro!')}
             className="p-2 hover:text-slate-100 hover:bg-[#1a1a26] rounded-xl transition-colors"
