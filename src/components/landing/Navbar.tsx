@@ -46,7 +46,7 @@ export default function Navbar() {
           <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-500 to-violet-600 flex items-center justify-center shadow-lg shadow-indigo-500/30 group-hover:shadow-indigo-500/50 transition-shadow">
             <MessageSquare className="w-4 h-4 text-white" />
           </div>
-          <span className="text-white font-bold text-xl tracking-tight">Nexus</span>
+          <span className="text-slate-900 dark:text-white font-bold text-xl tracking-tight">Nexus</span>
         </Link>
 
         {/* Desktop nav */}
@@ -55,7 +55,7 @@ export default function Navbar() {
             <li key={link.href}>
               <button
                 onClick={() => handleNavClick(link.href)}
-                className="px-4 py-2 text-sm text-gray-400 hover:text-white rounded-lg hover:bg-white/5 transition-all duration-200"
+                className="px-4 py-2 text-sm text-slate-700 dark:text-gray-400 hover:text-slate-950 dark:hover:text-white rounded-lg hover:bg-black/5 dark:hover:bg-white/5 transition-all duration-200"
               >
                 {link.label}
               </button>
@@ -68,7 +68,7 @@ export default function Navbar() {
           <ThemeToggle size="sm" />
           <Link
             href="/login"
-            className="text-sm text-gray-400 hover:text-white transition-colors px-4 py-2"
+            className="text-sm text-slate-700 dark:text-gray-400 hover:text-slate-950 dark:hover:text-white transition-colors px-4 py-2"
           >
             Sign In
           </Link>
@@ -85,7 +85,7 @@ export default function Navbar() {
           <ThemeToggle size="sm" />
           <button
             onClick={() => setMobileOpen((v) => !v)}
-            className="p-2 text-gray-400 hover:text-white rounded-lg hover:bg-white/5 transition-colors"
+            className="p-2 text-slate-700 dark:text-gray-400 hover:text-slate-950 dark:hover:text-white rounded-lg hover:bg-black/5 dark:hover:bg-white/5 transition-colors"
             aria-label="Toggle menu"
           >
             {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
@@ -101,22 +101,22 @@ export default function Navbar() {
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.2 }}
-            className="md:hidden overflow-hidden bg-[#0a0a0f]/95 backdrop-blur-xl border-b border-[#1e1e2e]"
+            className="md:hidden overflow-hidden bg-[#ede7df]/95 dark:bg-[#0a0a0f]/95 backdrop-blur-xl border-b border-stone-300 dark:border-[#1e1e2e]"
           >
             <div className="px-4 py-4 flex flex-col gap-2">
               {navLinks.map((link) => (
                 <button
                   key={link.href}
                   onClick={() => handleNavClick(link.href)}
-                  className="w-full text-left px-4 py-3 text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition-colors text-sm"
+                  className="w-full text-left px-4 py-3 text-slate-800 dark:text-gray-300 hover:text-black dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5 rounded-lg transition-colors text-sm"
                 >
                   {link.label}
                 </button>
               ))}
-              <div className="mt-2 pt-2 border-t border-[#1e1e2e] flex flex-col gap-2">
+              <div className="mt-2 pt-2 border-t border-stone-300 dark:border-[#1e1e2e] flex flex-col gap-2">
                 <Link
                   href="/login"
-                  className="px-4 py-3 text-gray-400 hover:text-white text-sm text-center transition-colors"
+                  className="px-4 py-3 text-slate-700 dark:text-gray-400 hover:text-black dark:hover:text-white text-sm text-center transition-colors"
                   onClick={() => setMobileOpen(false)}
                 >
                   Sign In

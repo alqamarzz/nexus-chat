@@ -13,6 +13,7 @@ interface UseMessagesReturn {
   deleteMessage: (messageId: string) => Promise<void>
   editMessage: (messageId: string, content: string) => Promise<void>
   addReaction: (messageId: string, emoji: string) => Promise<void>
+  markAsRead: () => Promise<void>
 }
 
 const AI_CONVERSATION_ID = 'ai'
@@ -84,19 +85,29 @@ export function useMessages(conversationId: string): UseMessagesReturn {
   // ── Mark as Read ────────────────────────────────────────────────────────────
 
   const markAsRead = useCallback(async () => {
-    if (!user || !conversationId || conversationId === AI_CONVERSATION_ID) return
+    if (!conversationId || conversationId === AI_CONVERSATION_ID) return
 
     // Immediately clear in local store so badge disappears without lag
     markConversationAsRead(conversationId)
 
-    try {
-      await supabase
-        .from('conversation_members')
-        .update({ last_read_at: new Date().toISOString() })
-        .eq('conversation_id', conversationId)
-        .eq('user_id', user.id)
-    } catch (err) {
-      console.error('[useMessages] markAsRead error:', err)
+    if (user?.id) {
+      try {
+        await supabase.rpc('mark_conversation_read', {
+          p_conversation_id: conversationId,
+        })
+      } catch {
+        // Fallback to direct table update if RPC not accessible
+      }
+
+      try {
+        await supabase
+          .from('conversation_members')
+          .update({ last_read_at: new Date().toISOString() })
+          .eq('conversation_id', conversationId)
+          .eq('user_id', user.id)
+      } catch (err) {
+        console.error('[useMessages] markAsRead error:', err)
+      }
     }
   }, [user, conversationId, supabase, markConversationAsRead])
 
@@ -409,5 +420,6 @@ export function useMessages(conversationId: string): UseMessagesReturn {
     deleteMessage,
     editMessage,
     addReaction,
+    markAsRead,
   }
 }

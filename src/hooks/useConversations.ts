@@ -99,10 +99,15 @@ export function useConversations(): UseConversationsReturn {
 
           const { count: unreadCount } = await unreadQuery
 
+          const isCurrentActive =
+            useChatStore.getState().activeConversationId === conv.id ||
+            (typeof window !== 'undefined' &&
+              window.location.pathname.includes(conv.id))
+
           return {
             ...conv,
             last_message: lastMessage,
-            unread_count: unreadCount ?? 0,
+            unread_count: isCurrentActive ? 0 : (unreadCount ?? 0),
           } as Conversation
         })
       )
@@ -165,7 +170,11 @@ export function useConversations(): UseConversationsReturn {
 
           if (fullMsg) {
             const currentActiveId = useChatStore.getState().activeConversationId
-            const isCurrentlyActive = currentActiveId === msg.conversation_id
+            const isPathActive =
+              typeof window !== 'undefined' &&
+              window.location.pathname.includes(msg.conversation_id)
+            const isCurrentlyActive =
+              currentActiveId === msg.conversation_id || isPathActive
 
             if (isCurrentlyActive) {
               updateConversation(msg.conversation_id, {
@@ -174,10 +183,16 @@ export function useConversations(): UseConversationsReturn {
               })
               if (user?.id) {
                 supabase
+                  .rpc('mark_conversation_read', {
+                    p_conversation_id: msg.conversation_id,
+                  })
+                  .then(() => {})
+                supabase
                   .from('conversation_members')
                   .update({ last_read_at: new Date().toISOString() })
                   .eq('conversation_id', msg.conversation_id)
                   .eq('user_id', user.id)
+                  .then(() => {})
               }
             } else if (msg.sender_id !== user?.id) {
               const currentConv = useChatStore.getState().conversations.find((c) => c.id === msg.conversation_id)
@@ -199,10 +214,12 @@ export function useConversations(): UseConversationsReturn {
           event: 'UPDATE',
           schema: 'public',
           table: 'conversation_members',
-          filter: `user_id=eq.${user.id}`,
         },
         (payload: any) => {
-          if (payload.new?.conversation_id && payload.new?.last_read_at) {
+          if (
+            payload.new?.conversation_id &&
+            (!user?.id || payload.new?.user_id === user.id)
+          ) {
             updateConversation(payload.new.conversation_id, {
               unread_count: 0,
             })

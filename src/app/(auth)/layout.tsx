@@ -1,6 +1,7 @@
 'use client'
 
 import { ThemeToggle } from '@/components/ui/ThemeToggle'
+import { BeanBagBackground } from '@/components/ui/BeanBagBackground'
 
 export default function AuthLayout({
   children,
@@ -9,6 +10,9 @@ export default function AuthLayout({
 }) {
   return (
     <div className="relative min-h-screen overflow-hidden bg-[#0a0a0f]">
+      {/* Whole-page Bean Bag Nap Background */}
+      <BeanBagBackground />
+
       {/* Top right Theme Toggle */}
       <div className="absolute top-4 right-4 z-20">
         <ThemeToggle size="sm" />

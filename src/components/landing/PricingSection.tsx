@@ -63,7 +63,7 @@ const plans = [
 
 export default function PricingSection() {
   return (
-    <section id="pricing" className="relative py-32 bg-[#0a0a0f]">
+    <section id="pricing" className="relative py-32 bg-transparent">
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1/2 h-px bg-gradient-to-r from-transparent via-indigo-500/50 to-transparent" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -75,16 +75,16 @@ export default function PricingSection() {
           transition={{ duration: 0.6 }}
           className="text-center mb-20"
         >
-          <span className="inline-block text-sm font-semibold text-indigo-400 uppercase tracking-widest mb-4">
+          <span className="inline-block text-sm font-semibold text-indigo-600 dark:text-indigo-400 uppercase tracking-widest mb-4">
             Pricing
           </span>
-          <h2 className="text-4xl sm:text-5xl font-black text-white mb-4">
+          <h2 className="text-4xl sm:text-5xl font-black text-slate-900 dark:text-white mb-4">
             Simple, transparent{' '}
-            <span className="bg-gradient-to-r from-indigo-400 to-violet-400 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-indigo-500 to-violet-600 dark:from-indigo-400 dark:to-violet-400 bg-clip-text text-transparent">
               pricing
             </span>
           </h2>
-          <p className="text-gray-400 text-lg max-w-xl mx-auto">
+          <p className="text-slate-600 dark:text-gray-400 text-lg max-w-xl mx-auto">
             Start free and upgrade when you need more. No hidden fees, cancel anytime.
           </p>
         </motion.div>
@@ -128,14 +128,14 @@ export default function PricingSection() {
 
               {/* Plan name */}
               <div className="mb-4">
-                <h3 className="text-lg font-bold text-white">{plan.name}</h3>
+                <h3 className="text-lg font-bold text-slate-900 dark:text-white">{plan.name}</h3>
                 <p className="text-sm text-gray-500 mt-1">{plan.description}</p>
               </div>
 
               {/* Price */}
               <div className="mb-6">
                 <div className="flex items-end gap-1">
-                  <span className={`text-4xl font-black ${plan.highlighted ? 'bg-gradient-to-r from-indigo-400 to-violet-400 bg-clip-text text-transparent' : 'text-white'}`}>
+                  <span className={`text-4xl font-black ${plan.highlighted ? 'bg-gradient-to-r from-indigo-500 to-violet-600 dark:from-indigo-400 dark:to-violet-400 bg-clip-text text-transparent' : 'text-slate-900 dark:text-white'}`}>
                     {plan.price}
                   </span>
                   <span className="text-gray-500 text-sm mb-1">/{plan.period}</span>
@@ -145,11 +145,11 @@ export default function PricingSection() {
               {/* Features */}
               <ul className="space-y-3 mb-8 flex-1">
                 {plan.features.map((f) => (
-                  <li key={f} className="flex items-center gap-2.5 text-sm text-gray-300">
+                  <li key={f} className="flex items-center gap-2.5 text-sm text-slate-700 dark:text-gray-300">
                     <div className={`w-4 h-4 rounded-full flex items-center justify-center flex-shrink-0 ${
-                      plan.highlighted ? 'bg-gradient-to-br from-indigo-500 to-violet-600' : 'bg-[#1e1e2e]'
+                      plan.highlighted ? 'bg-gradient-to-br from-indigo-500 to-violet-600' : 'bg-slate-200 dark:bg-[#1e1e2e]'
                     }`}>
-                      <Check className="w-2.5 h-2.5 text-white" />
+                      <Check className="w-2.5 h-2.5 text-slate-900 dark:text-white" />
                     </div>
                     {f}
                   </li>
@@ -162,7 +162,7 @@ export default function PricingSection() {
                 className={`w-full py-3 px-6 rounded-xl font-semibold text-sm text-center transition-all duration-200 ${
                   plan.highlighted
                     ? 'bg-gradient-to-r from-indigo-500 to-violet-600 text-white hover:from-indigo-400 hover:to-violet-500 shadow-lg shadow-indigo-500/30'
-                    : 'border border-[#1e1e2e] text-white hover:bg-white/5 hover:border-white/20'
+                    : 'border border-slate-300 dark:border-[#1e1e2e] text-slate-900 dark:text-white hover:bg-black/5 dark:hover:bg-white/5'
                 }`}
               >
                 {plan.cta}

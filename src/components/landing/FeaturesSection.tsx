@@ -69,7 +69,7 @@ export default function FeaturesSection() {
   const inView = useInView(ref, { once: true, margin: '-80px' });
 
   return (
-    <section id="features" className="relative py-32 bg-[#0a0a0f]">
+    <section id="features" className="relative py-32 bg-transparent">
       {/* Subtle top border glow */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1/2 h-px bg-gradient-to-r from-transparent via-indigo-500/50 to-transparent" />
 
@@ -82,16 +82,16 @@ export default function FeaturesSection() {
           transition={{ duration: 0.6 }}
           className="text-center mb-20"
         >
-          <span className="inline-block text-sm font-semibold text-indigo-400 uppercase tracking-widest mb-4">
+          <span className="inline-block text-sm font-semibold text-indigo-600 dark:text-indigo-400 uppercase tracking-widest mb-4">
             Features
           </span>
-          <h2 className="text-4xl sm:text-5xl font-black text-white mb-4">
+          <h2 className="text-4xl sm:text-5xl font-black text-slate-900 dark:text-white mb-4">
             Everything you need to{' '}
-            <span className="bg-gradient-to-r from-indigo-400 to-violet-400 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-indigo-500 to-violet-600 dark:from-indigo-400 dark:to-violet-400 bg-clip-text text-transparent">
               stay connected
             </span>
           </h2>
-          <p className="text-gray-400 text-lg max-w-2xl mx-auto">
+          <p className="text-slate-600 dark:text-gray-400 text-lg max-w-2xl mx-auto">
             Nexus combines powerful real-time communication with cutting-edge AI to give you an experience like no other.
           </p>
         </motion.div>
@@ -132,8 +132,8 @@ export default function FeaturesSection() {
                   >
                     <Icon className="w-6 h-6 text-white" />
                   </div>
-                  <h3 className="text-lg font-bold text-white mb-2">{feat.title}</h3>
-                  <p className="text-gray-400 text-sm leading-relaxed">{feat.description}</p>
+                  <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-2">{feat.title}</h3>
+                  <p className="text-slate-600 dark:text-gray-400 text-sm leading-relaxed">{feat.description}</p>
                 </div>
               </motion.div>
             );

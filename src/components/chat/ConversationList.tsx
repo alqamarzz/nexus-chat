@@ -8,6 +8,7 @@ import { Conversation, Profile } from '@/types'
 import { Avatar } from '@/components/ui/Avatar'
 import { formatMessageTime } from '@/lib/utils'
 import { useChatStore } from '@/stores/chat-store'
+import { createClient } from '@/lib/supabase/client'
 
 interface ConversationListProps {
   conversations: Conversation[]
@@ -24,7 +25,30 @@ export function ConversationList({
 }: ConversationListProps) {
   const params = useParams()
   const activeId = params?.id as string | undefined
+  const activeConversationId = useChatStore((s) => s.activeConversationId)
+  const setActiveConversation = useChatStore((s) => s.setActiveConversation)
   const markConversationAsRead = useChatStore((s) => s.markConversationAsRead)
+  const supabase = createClient()
+
+  // Auto-clear unread badge if any conversation currently displayed is active
+  React.useEffect(() => {
+    conversations.forEach((conv) => {
+      const isPathActive =
+        typeof window !== 'undefined' &&
+        window.location.pathname.includes(conv.id)
+      const isItemActive =
+        activeId === conv.id ||
+        activeConversationId === conv.id ||
+        isPathActive
+
+      if (isItemActive && conv.unread_count > 0) {
+        markConversationAsRead(conv.id)
+        supabase
+          .rpc('mark_conversation_read', { p_conversation_id: conv.id })
+          .then(() => {})
+      }
+    })
+  }, [conversations, activeId, activeConversationId, markConversationAsRead, supabase])
 
   const filtered = conversations.filter((c) => {
     if (!searchQuery) return true
@@ -85,14 +109,24 @@ export function ConversationList({
         const avatarUrl = isGroup ? conv.avatar_url : otherMember?.profile?.avatar_url
         const isOnline = !isGroup && Boolean(otherMember?.profile?.is_online)
         const lastMsg = conv.last_message
-        const isActive = activeId === conv.id
+        const isPathActive =
+          typeof window !== 'undefined' &&
+          window.location.pathname.includes(conv.id)
+        const isActive =
+          activeId === conv.id ||
+          activeConversationId === conv.id ||
+          isPathActive
 
         return (
           <Link
             key={conv.id}
             href={`/chat/${conv.id}`}
             onClick={() => {
+              setActiveConversation(conv.id)
               markConversationAsRead(conv.id)
+              supabase
+                .rpc('mark_conversation_read', { p_conversation_id: conv.id })
+                .then(() => {})
               onSelectConversation?.(conv.id)
             }}
             className={`flex items-center gap-3 p-2.5 rounded-xl transition-all ${

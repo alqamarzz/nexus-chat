@@ -33,7 +33,7 @@ export default function HowItWorksSection() {
   const inView = useInView(ref, { once: true, margin: '-80px' });
 
   return (
-    <section id="how-it-works" className="relative py-32 bg-[#0a0a0f]">
+    <section id="how-it-works" className="relative py-32 bg-transparent">
       {/* Background accent */}
       <div
         className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[400px] rounded-full opacity-30 pointer-events-none"
@@ -51,16 +51,16 @@ export default function HowItWorksSection() {
           transition={{ duration: 0.6 }}
           className="text-center mb-24"
         >
-          <span className="inline-block text-sm font-semibold text-indigo-400 uppercase tracking-widest mb-4">
+          <span className="inline-block text-sm font-semibold text-indigo-600 dark:text-indigo-400 uppercase tracking-widest mb-4">
             How It Works
           </span>
-          <h2 className="text-4xl sm:text-5xl font-black text-white mb-4">
+          <h2 className="text-4xl sm:text-5xl font-black text-slate-900 dark:text-white mb-4">
             Get started in{' '}
-            <span className="bg-gradient-to-r from-indigo-400 to-violet-400 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-indigo-500 to-violet-600 dark:from-indigo-400 dark:to-violet-400 bg-clip-text text-transparent">
               3 simple steps
             </span>
           </h2>
-          <p className="text-gray-400 text-lg max-w-xl mx-auto">
+          <p className="text-slate-600 dark:text-gray-400 text-lg max-w-xl mx-auto">
             From sign-up to your first conversation in under two minutes.
           </p>
         </motion.div>
@@ -107,8 +107,8 @@ export default function HowItWorksSection() {
                     </div>
                   </div>
 
-                  <h3 className="text-xl font-bold text-white mb-3">{step.title}</h3>
-                  <p className="text-gray-400 leading-relaxed">{step.description}</p>
+                  <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-3">{step.title}</h3>
+                  <p className="text-slate-600 dark:text-gray-400 leading-relaxed">{step.description}</p>
                 </motion.div>
               );
             })}

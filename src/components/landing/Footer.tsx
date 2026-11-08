@@ -45,7 +45,7 @@ export default function Footer() {
   };
 
   return (
-    <footer className="relative bg-[#0a0a0f] border-t border-[#1e1e2e] overflow-hidden transition-colors duration-500">
+    <footer className="relative bg-transparent border-t border-stone-300 dark:border-[#1e1e2e] overflow-hidden transition-colors duration-500">
       {/* Background warm lamp ambient glow */}
       <div className="absolute -bottom-24 -left-24 w-96 h-96 bg-amber-500/10 dark:bg-amber-400/5 rounded-full blur-[100px] pointer-events-none" />
 
@@ -58,9 +58,9 @@ export default function Footer() {
                 <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-indigo-500 to-violet-600 flex items-center justify-center shadow-lg shadow-indigo-500/30 group-hover:shadow-indigo-500/50 transition-shadow">
                   <MessageSquare className="w-5 h-5 text-white" />
                 </div>
-                <span className="text-white font-bold text-2xl tracking-tight">Nexus</span>
+                <span className="text-slate-900 dark:text-white font-bold text-2xl tracking-tight">Nexus</span>
               </Link>
-              <p className="text-gray-500 text-sm leading-relaxed mb-4 max-w-xs font-medium">
+              <p className="text-slate-600 dark:text-gray-500 text-sm leading-relaxed mb-4 max-w-xs font-medium">
                 For the ones who ship between naps. Real-time messaging and AI superpowers in one cozy app.
               </p>
             </div>
@@ -76,7 +76,7 @@ export default function Footer() {
                 href="https://github.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-9 h-9 rounded-xl border border-[#1e1e2e] bg-[#111118] flex items-center justify-center text-gray-500 hover:text-white hover:border-indigo-500/40 transition-all duration-200"
+                className="w-9 h-9 rounded-xl border border-stone-300 dark:border-[#1e1e2e] bg-stone-100 dark:bg-[#111118] flex items-center justify-center text-slate-600 dark:text-gray-500 hover:text-slate-900 dark:hover:text-white hover:border-indigo-500/40 transition-all duration-200"
                 aria-label="GitHub"
               >
                 <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
@@ -87,7 +87,7 @@ export default function Footer() {
                 href="https://x.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-9 h-9 rounded-xl border border-[#1e1e2e] bg-[#111118] flex items-center justify-center text-gray-500 hover:text-white hover:border-indigo-500/40 transition-all duration-200"
+                className="w-9 h-9 rounded-xl border border-stone-300 dark:border-[#1e1e2e] bg-stone-100 dark:bg-[#111118] flex items-center justify-center text-slate-600 dark:text-gray-500 hover:text-slate-900 dark:hover:text-white hover:border-indigo-500/40 transition-all duration-200"
                 aria-label="Twitter / X"
               >
                 <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
@@ -100,21 +100,21 @@ export default function Footer() {
           {/* Link columns */}
           {Object.entries(footerLinks).map(([category, links]) => (
             <div key={category} className="lg:col-span-1">
-              <h4 className="text-white font-semibold text-sm mb-4">{category}</h4>
+              <h4 className="text-slate-900 dark:text-white font-semibold text-sm mb-4">{category}</h4>
               <ul className="space-y-3">
                 {links.map((link) => (
                   <li key={link.label}>
                     {link.href.startsWith('#') ? (
                       <button
                         onClick={() => handleNavClick(link.href)}
-                        className="text-sm text-gray-500 hover:text-gray-300 transition-colors text-left"
+                        className="text-sm text-slate-600 dark:text-gray-500 hover:text-slate-950 dark:hover:text-gray-300 transition-colors text-left"
                       >
                         {link.label}
                       </button>
                     ) : (
                       <Link
                         href={link.href}
-                        className="text-sm text-gray-500 hover:text-gray-300 transition-colors"
+                        className="text-sm text-slate-600 dark:text-gray-500 hover:text-slate-950 dark:hover:text-gray-300 transition-colors"
                       >
                         {link.label}
                       </Link>
@@ -127,12 +127,12 @@ export default function Footer() {
 
           {/* Newsletter (Bean Bag Nap "Wake me for updates" style) */}
           <div className="lg:col-span-2">
-            <h4 className="text-white font-semibold text-base mb-1">Wake me for updates</h4>
-            <p className="text-gray-500 text-sm mb-4 leading-relaxed">
+            <h4 className="text-slate-900 dark:text-white font-semibold text-base mb-1">Wake me for updates</h4>
+            <p className="text-slate-600 dark:text-gray-500 text-sm mb-4 leading-relaxed">
               Release notes, new features, and the occasional thought from our sleepy but dedicated team.
             </p>
             {submitted ? (
-              <div className="flex items-center gap-2 px-4 py-3 rounded-xl bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 dark:text-indigo-300 text-sm">
+              <div className="flex items-center gap-2 px-4 py-3 rounded-xl bg-indigo-500/10 border border-indigo-500/20 text-indigo-700 dark:text-indigo-300 text-sm">
                 ✓ You&apos;re subscribed! We will wake you when new features drop.
               </div>
             ) : (
@@ -143,15 +143,15 @@ export default function Footer() {
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="Enter your email"
                   required
-                  className="flex-1 min-w-0 px-4 py-2.5 rounded-xl bg-[#111118] border border-[#1e1e2e] text-white text-sm placeholder-gray-500 focus:outline-none focus:border-indigo-500/50 transition-colors"
+                  className="flex-1 min-w-0 px-4 py-2.5 rounded-xl bg-white dark:bg-[#111118] border border-stone-300 dark:border-[#1e1e2e] text-slate-900 dark:text-white text-sm placeholder-gray-500 focus:outline-none focus:border-indigo-500/50 transition-colors"
                 />
                 <button
                   type="submit"
                   className="px-5 py-2.5 rounded-xl bg-[#171513] text-white dark:bg-white dark:text-black font-semibold text-sm hover:opacity-90 transition-all duration-200 flex items-center gap-1.5 flex-shrink-0 shadow-md"
                   aria-label="Subscribe"
                 >
-                  <span>Subscribe</span>
-                  <ArrowRight className="w-4 h-4" />
+                  <span className="text-white dark:text-black">Subscribe</span>
+                  <ArrowRight className="w-4 h-4 text-white dark:text-black" />
                 </button>
               </form>
             )}

@@ -81,7 +81,7 @@ export default function AISpotlightSection() {
   }
 
   return (
-    <section id="ai-spotlight" className="relative py-32 bg-[#0a0a0f] overflow-hidden">
+    <section id="ai-spotlight" className="relative py-32 bg-transparent overflow-hidden">
       <div className="absolute inset-0 pointer-events-none">
         <div
           className="absolute top-0 right-0 w-[600px] h-[600px] rounded-full"
@@ -106,17 +106,17 @@ export default function AISpotlightSection() {
             viewport={{ once: true }}
             transition={{ duration: 0.7 }}
           >
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-cyan-500/30 bg-cyan-500/10 text-cyan-300 text-sm font-medium mb-6">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-cyan-500/30 bg-cyan-500/10 text-cyan-700 dark:text-cyan-300 text-sm font-medium mb-6">
               <Sparkles className="w-3.5 h-3.5" />
               Nexus AI
             </div>
-            <h2 className="text-4xl sm:text-5xl font-black text-white mb-6 leading-tight">
+            <h2 className="text-4xl sm:text-5xl font-black text-slate-900 dark:text-white mb-6 leading-tight">
               Meet{' '}
-              <span className="bg-gradient-to-r from-indigo-400 via-violet-400 to-cyan-400 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-indigo-500 via-violet-500 to-amber-600 dark:from-indigo-400 dark:via-violet-400 dark:to-cyan-400 bg-clip-text text-transparent">
                 Nexus AI
               </span>
             </h2>
-            <p className="text-gray-400 text-lg leading-relaxed mb-8">
+            <p className="text-slate-600 dark:text-gray-400 text-lg leading-relaxed mb-8">
               Your always-on AI companion, powered by Gemini. Available in every conversation, 
               ready to assist with anything — from writing and coding to analysis and creative brainstorming.
             </p>
@@ -127,14 +127,14 @@ export default function AISpotlightSection() {
                 return (
                   <div
                     key={cap.label}
-                    className="flex items-start gap-3 p-4 rounded-xl border border-[#1e1e2e] bg-[#111118] hover:border-indigo-500/30 transition-colors"
+                    className="flex items-start gap-3 p-4 rounded-xl border border-stone-300 dark:border-[#1e1e2e] bg-[#f7f3ec] dark:bg-[#111118] hover:border-indigo-500/30 transition-colors"
                   >
                     <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-500 to-cyan-500 flex items-center justify-center flex-shrink-0">
                       <Icon className="w-4 h-4 text-white" />
                     </div>
                     <div>
-                      <p className="text-sm font-semibold text-white">{cap.label}</p>
-                      <p className="text-xs text-gray-500 mt-0.5 leading-relaxed">{cap.desc}</p>
+                      <p className="text-sm font-semibold text-slate-900 dark:text-white">{cap.label}</p>
+                      <p className="text-xs text-slate-500 dark:text-gray-500 mt-0.5 leading-relaxed">{cap.desc}</p>
                     </div>
                   </div>
                 );
@@ -168,7 +168,7 @@ export default function AISpotlightSection() {
                   <Sparkles className="w-4 h-4 text-white" />
                 </div>
                 <div>
-                  <p className="text-sm font-semibold text-white">Nexus AI</p>
+                  <p className="text-sm font-semibold text-slate-900 dark:text-white">Nexus AI</p>
                   <p className="text-xs text-emerald-400">● Always available</p>
                 </div>
               </div>

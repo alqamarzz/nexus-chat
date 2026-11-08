@@ -415,6 +415,29 @@ html.light .border-\[\#2a2a3e\] {
 }
 
 /* Warm text overrides in light mode */
+html.light h1,
+html.light h2,
+html.light h3,
+html.light h4,
+html.light h5,
+html.light h6 {
+  color: #1c1917 !important;
+}
+
+html.light .text-white:not(.keep-white):not(button.bg-gradient-to-r):not(button.bg-gradient-to-r *):not(button.bg-gradient-to-tr *):not(button.bg-indigo-600 *):not(a.bg-gradient-to-r):not(a.bg-gradient-to-r *):not(.bg-gradient-to-r *):not(.bg-indigo-600 *):not(.bg-indigo-500 *):not(.bg-emerald-500 *):not(.bg-violet-600 *):not(.bg-black *):not(.bg-\[\#171513\] *):not(.bg-\[\#171513\]):not(.bg-black) {
+  color: #1c1917 !important;
+}
+
+html.light .text-\[\#f8fafc\],
+html.light .text-\[\#f1f5f9\] {
+  color: #1c1917 !important;
+}
+
+html.light .text-\[\#94a3b8\],
+html.light .text-\[\#64748b\] {
+  color: #57534e !important;
+}
+
 html.light .text-slate-100 {
   color: #1c1917 !important;
 }
@@ -427,12 +450,73 @@ html.light .text-slate-300 {
   color: #44403c !important;
 }
 
-html.light .text-slate-400 {
-  color: #6e6760 !important;
+html.light .text-slate-400,
+html.light .text-slate-500 {
+  color: #57534e !important;
 }
 
-html.light .text-slate-500 {
-  color: #8c847a !important;
+html.light .text-gray-100,
+html.light .text-gray-200 {
+  color: #292524 !important;
+}
+
+html.light .text-gray-300 {
+  color: #44403c !important;
+}
+
+html.light .text-gray-400,
+html.light .text-gray-500 {
+  color: #57534e !important;
+}
+
+html.light .text-gray-600,
+html.light .text-gray-700 {
+  color: #44403c !important;
+}
+
+html.light .text-indigo-400,
+html.light .text-indigo-300 {
+  color: #4338ca !important;
+}
+
+html.light .text-cyan-400,
+html.light .text-cyan-300 {
+  color: #0369a1 !important;
+}
+
+html.light .text-emerald-400,
+html.light .text-emerald-300 {
+  color: #047857 !important;
+}
+
+/* Light mode transparent / subtle container borders and backgrounds */
+html.light .border-white\/10,
+html.light .border-white\/20,
+html.light .border-white\/30 {
+  border-color: rgba(28, 25, 23, 0.12) !important;
+}
+
+html.light .bg-white\/5,
+html.light .bg-white\/10 {
+  background-color: rgba(28, 25, 23, 0.04) !important;
+}
+
+html.light .hover\:bg-white\/5:hover,
+html.light .hover\:bg-white\/10:hover {
+  background-color: rgba(28, 25, 23, 0.06) !important;
+}
+
+html.light .hover\:text-white:hover {
+  color: #1c1917 !important;
+}
+
+/* Preserve bright white text on dark/gradient action buttons */
+html.light a.bg-gradient-to-r,
+html.light button.bg-gradient-to-r,
+html.light a.bg-gradient-to-r *,
+html.light button.bg-gradient-to-r *,
+html.light .keep-white {
+  color: #ffffff !important;
 }
 
 /* Input fields in light mode */

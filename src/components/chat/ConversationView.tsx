@@ -44,6 +44,7 @@ export function ConversationView() {
     deleteMessage,
     editMessage,
     addReaction,
+    markAsRead,
   } = useMessages(conversationId)
 
   // Local state for AI chat messages when in AI mode
@@ -72,23 +73,43 @@ export function ConversationView() {
 
   const isOnline = isAI ? true : !isGroup && Boolean(otherMember?.profile?.is_online)
 
-  // Sync active conversation and mark as read immediately
+  // Sync active conversation and mark as read immediately both locally and in database
   useEffect(() => {
     if (conversationId) {
       setActiveConversation(conversationId)
       markConversationAsRead(conversationId)
+      if (conversationId !== 'ai') {
+        markAsRead()
+      }
     }
     return () => {
       setActiveConversation(null)
     }
-  }, [conversationId, setActiveConversation, markConversationAsRead])
+  }, [conversationId, setActiveConversation, markConversationAsRead, markAsRead])
 
   // Clear unread badge whenever new messages arrive or window is active
   useEffect(() => {
     if (conversationId && conversationId !== 'ai') {
       markConversationAsRead(conversationId)
+      markAsRead()
     }
-  }, [conversationId, messages.length, markConversationAsRead])
+  }, [conversationId, messages.length, markConversationAsRead, markAsRead])
+
+  // Clear unread when user focuses or clicks inside the chat
+  useEffect(() => {
+    const handleRead = () => {
+      if (conversationId && conversationId !== 'ai') {
+        markConversationAsRead(conversationId)
+        markAsRead()
+      }
+    }
+    window.addEventListener('focus', handleRead)
+    window.addEventListener('click', handleRead)
+    return () => {
+      window.removeEventListener('focus', handleRead)
+      window.removeEventListener('click', handleRead)
+    }
+  }, [conversationId, markConversationAsRead, markAsRead])
 
   // Scroll to bottom on message changes
   const scrollToBottom = () => {

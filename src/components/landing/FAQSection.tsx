@@ -58,13 +58,13 @@ function FAQItem({ faq, index }: { faq: typeof faqs[0]; index: number }) {
         className="w-full flex items-center justify-between gap-4 px-6 py-4 text-left bg-[#111118] hover:bg-[#111118]/80 transition-colors"
         aria-expanded={open}
       >
-        <span className="text-white font-semibold text-sm sm:text-base">{faq.question}</span>
+        <span className="text-slate-900 dark:text-white font-semibold text-sm sm:text-base">{faq.question}</span>
         <motion.div
           animate={{ rotate: open ? 180 : 0 }}
           transition={{ duration: 0.25 }}
           className="flex-shrink-0"
         >
-          <ChevronDown className={`w-5 h-5 transition-colors ${open ? 'text-indigo-400' : 'text-gray-500'}`} />
+          <ChevronDown className={`w-5 h-5 transition-colors ${open ? 'text-indigo-600 dark:text-indigo-400' : 'text-slate-500 dark:text-gray-500'}`} />
         </motion.div>
       </button>
 
@@ -78,7 +78,7 @@ function FAQItem({ faq, index }: { faq: typeof faqs[0]; index: number }) {
           >
             <div className="px-6 pb-5 pt-1 bg-[#111118]">
               <div className="h-px bg-[#1e1e2e] mb-4" />
-              <p className="text-gray-400 text-sm leading-relaxed">{faq.answer}</p>
+              <p className="text-slate-700 dark:text-gray-400 text-sm leading-relaxed">{faq.answer}</p>
             </div>
           </motion.div>
         )}
@@ -89,7 +89,7 @@ function FAQItem({ faq, index }: { faq: typeof faqs[0]; index: number }) {
 
 export default function FAQSection() {
   return (
-    <section id="faq" className="relative py-32 bg-[#0a0a0f]">
+    <section id="faq" className="relative py-32 bg-transparent">
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <motion.div
@@ -99,16 +99,16 @@ export default function FAQSection() {
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <span className="inline-block text-sm font-semibold text-indigo-400 uppercase tracking-widest mb-4">
+          <span className="inline-block text-sm font-semibold text-indigo-600 dark:text-indigo-400 uppercase tracking-widest mb-4">
             FAQ
           </span>
-          <h2 className="text-4xl sm:text-5xl font-black text-white mb-4">
+          <h2 className="text-4xl sm:text-5xl font-black text-slate-900 dark:text-white mb-4">
             Frequently asked{' '}
-            <span className="bg-gradient-to-r from-indigo-400 to-violet-400 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-indigo-500 to-violet-600 dark:from-indigo-400 dark:to-violet-400 bg-clip-text text-transparent">
               questions
             </span>
           </h2>
-          <p className="text-gray-400 text-lg">
+          <p className="text-slate-600 dark:text-gray-400 text-lg">
             Everything you need to know about Nexus.
           </p>
         </motion.div>

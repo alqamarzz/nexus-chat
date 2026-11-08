@@ -6,7 +6,7 @@ import { ArrowRight, MessageCircle } from 'lucide-react';
 
 export default function CTASection() {
   return (
-    <section className="relative py-32 bg-[#0a0a0f] overflow-hidden">
+    <section className="relative py-32 bg-transparent overflow-hidden">
       {/* Animated gradient background */}
       <div className="absolute inset-0">
         <motion.div
@@ -54,14 +54,14 @@ export default function CTASection() {
             <MessageCircle className="w-8 h-8 text-white" />
           </motion.div>
 
-          <h2 className="text-5xl sm:text-6xl lg:text-7xl font-black text-white mb-6 leading-tight">
+          <h2 className="text-5xl sm:text-6xl lg:text-7xl font-black text-slate-900 dark:text-white mb-6 leading-tight">
             Ready to{' '}
-            <span className="bg-gradient-to-r from-indigo-400 via-violet-400 to-cyan-400 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-indigo-500 via-violet-500 to-amber-600 dark:from-indigo-400 dark:via-violet-400 dark:to-cyan-400 bg-clip-text text-transparent">
               Connect Better?
             </span>
           </h2>
 
-          <p className="text-xl text-gray-400 mb-10 max-w-2xl mx-auto leading-relaxed">
+          <p className="text-xl text-slate-600 dark:text-gray-400 mb-10 max-w-2xl mx-auto leading-relaxed">
             Join thousands of teams and individuals who use Nexus every day to chat smarter, 
             collaborate faster, and communicate with AI by their side.
           </p>
@@ -76,7 +76,7 @@ export default function CTASection() {
             </Link>
             <Link
               href="/login"
-              className="inline-flex items-center justify-center gap-2 px-10 py-4 rounded-xl font-bold text-white text-lg border border-white/20 hover:border-white/40 hover:bg-white/5 transition-all duration-200"
+              className="inline-flex items-center justify-center gap-2 px-10 py-4 rounded-xl font-bold text-slate-900 dark:text-white text-lg border border-slate-900/20 dark:border-white/20 hover:border-slate-900/40 dark:hover:border-white/40 hover:bg-black/5 dark:hover:bg-white/5 transition-all duration-200"
             >
               Sign In
             </Link>

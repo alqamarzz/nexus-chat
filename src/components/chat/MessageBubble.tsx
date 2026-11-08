@@ -174,7 +174,7 @@ export function MessageBubble({
                             >
                               <FileText className="w-6 h-6 text-indigo-400 shrink-0" />
                               <div className="flex-1 min-w-0">
-                                <p className="text-xs font-medium text-white truncate">{att.name}</p>
+                                <p className="text-xs font-medium text-inherit truncate">{att.name}</p>
                                 <p className="text-[10px] text-slate-400">{formatFileSize(att.size || 0)}</p>
                               </div>
                               <Download className="w-4 h-4 text-slate-400" />

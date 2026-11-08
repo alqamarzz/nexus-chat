@@ -4,6 +4,7 @@ import { useRef } from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { ArrowDown, Sparkles, MessageCircle, Zap } from 'lucide-react';
+import { BeanBagCoder } from '@/components/ui/BeanBagCoder';
 
 const fakeContacts = [
   { name: 'Sarah K.', color: 'from-pink-500 to-rose-500', lastMsg: 'Hey! Are you free later?', time: '2m' },
@@ -42,7 +43,7 @@ export default function HeroSection() {
   return (
     <section id="hero" className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden pt-16">
       {/* Gradient mesh background */}
-      <div className="absolute inset-0 bg-[#0a0a0f]">
+      <div className="absolute inset-0 bg-transparent">
         <motion.div
           className="absolute top-[-20%] left-[-10%] w-[60%] h-[60%] rounded-full"
           style={{
@@ -93,7 +94,7 @@ export default function HeroSection() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-indigo-500/30 bg-indigo-500/10 text-indigo-300 text-sm font-medium mb-8"
+          className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-indigo-500/30 bg-indigo-500/10 text-indigo-700 dark:text-indigo-300 text-sm font-medium mb-8"
         >
           <Zap className="w-3.5 h-3.5" />
           Powered by Gemini AI
@@ -104,10 +105,10 @@ export default function HeroSection() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.1 }}
-          className="text-5xl sm:text-6xl lg:text-7xl font-black text-white leading-[1.05] tracking-tight mb-6"
+          className="text-5xl sm:text-6xl lg:text-7xl font-black text-slate-900 dark:text-white leading-[1.05] tracking-tight mb-6"
         >
           Chat That Moves{' '}
-          <span className="bg-gradient-to-r from-indigo-400 via-violet-400 to-cyan-400 bg-clip-text text-transparent">
+          <span className="bg-gradient-to-r from-indigo-500 via-violet-500 to-amber-600 dark:from-indigo-400 dark:via-violet-400 dark:to-cyan-400 bg-clip-text text-transparent">
             At The Speed Of Thought
           </span>
         </motion.h1>
@@ -117,7 +118,7 @@ export default function HeroSection() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.2 }}
-          className="max-w-2xl text-lg sm:text-xl text-gray-400 mb-10 leading-relaxed"
+          className="max-w-2xl text-lg sm:text-xl text-slate-700 dark:text-gray-400 mb-10 leading-relaxed"
         >
           Real-time messaging, AI-powered conversations, and seamless collaboration — all in one beautiful app.
         </motion.p>
@@ -127,23 +128,33 @@ export default function HeroSection() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.3 }}
-          className="flex flex-col sm:flex-row gap-4 mb-20"
+          className="flex flex-col sm:flex-row items-center gap-4 mb-12"
         >
           <Link
             href="/register"
             className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl font-semibold text-white bg-gradient-to-r from-indigo-500 to-violet-600 hover:from-indigo-400 hover:to-violet-500 transition-all duration-200 shadow-2xl shadow-indigo-500/30 hover:shadow-indigo-500/50 hover:scale-105"
           >
-            <MessageCircle className="w-5 h-5" />
-            Start Chatting Free
+            <MessageCircle className="w-5 h-5 text-white" />
+            <span className="text-white">Start Chatting Free</span>
           </Link>
           <button
             onClick={() => {
               document.getElementById('how-it-works')?.scrollIntoView({ behavior: 'smooth' });
             }}
-            className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl font-semibold text-white border border-white/20 hover:border-white/40 hover:bg-white/5 transition-all duration-200"
+            className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl font-semibold text-slate-800 dark:text-white border border-slate-800/20 dark:border-white/20 hover:border-slate-800/40 dark:hover:border-white/40 hover:bg-black/5 dark:hover:bg-white/5 transition-all duration-200"
           >
             See How It Works
           </button>
+        </motion.div>
+
+        {/* Bean Bag Nap Coder Featured in Hero */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.4 }}
+          className="mb-14 w-full flex justify-center"
+        >
+          <BeanBagCoder size="md" showStickyNote={true} stickyText="Compiling... myself." />
         </motion.div>
 
         {/* Chat Preview Mockup */}
@@ -195,7 +206,7 @@ export default function HeroSection() {
                     </div>
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center justify-between">
-                        <span className="text-xs font-semibold text-white truncate">{c.name}</span>
+                        <span className="text-xs font-semibold text-slate-900 dark:text-white truncate">{c.name}</span>
                         <span className="text-[10px] text-gray-500">{c.time}</span>
                       </div>
                       <p className="text-[10px] text-gray-500 truncate">{c.lastMsg}</p>
@@ -213,7 +224,7 @@ export default function HeroSection() {
                   <span className="text-[9px] font-bold text-white">S</span>
                 </div>
                 <div>
-                  <p className="text-xs font-semibold text-white">Sarah K.</p>
+                  <p className="text-xs font-semibold text-slate-900 dark:text-white">Sarah K.</p>
                   <p className="text-[10px] text-emerald-400">● Online</p>
                 </div>
               </div>
