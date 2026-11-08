@@ -9,6 +9,7 @@ import { z } from 'zod'
 import { toast } from 'sonner'
 import { createClient } from '@/lib/supabase/client'
 import { User, Mail, Lock, Sparkles, Check, ArrowRight } from 'lucide-react'
+import { AuthTransitionScreen } from '@/components/ui/AuthTransitionScreen'
 
 const registerSchema = z
   .object({
@@ -66,6 +67,8 @@ export default function RegisterPage() {
   const [selectedAvatar, setSelectedAvatar] = useState(AVATAR_OPTIONS[0])
   const [isLoading, setIsLoading] = useState(false)
   const [isGoogleLoading, setIsGoogleLoading] = useState(false)
+  const [isTransitioning, setIsTransitioning] = useState(false)
+  const [createdName, setCreatedName] = useState('')
 
   const {
     register,
@@ -98,6 +101,7 @@ export default function RegisterPage() {
         } else {
           toast.error(result.error || 'Failed to create account')
         }
+        setIsLoading(false)
         return
       }
 
@@ -107,15 +111,16 @@ export default function RegisterPage() {
             'Account created! Please check your email to verify, or disable email confirmations in Supabase to login instantly.'
         )
         router.push('/login')
+        setIsLoading(false)
       } else {
+        setCreatedName(data.fullName)
+        setIsTransitioning(true)
         toast.success('Account created successfully! Welcome to Nexus.')
-        router.push('/chat')
-        router.refresh()
+        window.location.href = '/chat'
       }
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : 'Something went wrong'
       toast.error(message)
-    } finally {
       setIsLoading(false)
     }
   }
@@ -139,6 +144,16 @@ export default function RegisterPage() {
     } finally {
       setIsGoogleLoading(false)
     }
+  }
+
+  if (isTransitioning) {
+    return (
+      <AuthTransitionScreen
+        mode="register"
+        title="Creating your Nexus Account..."
+        subtitle={`Welcome, ${createdName || 'User'}! Setting up your secure messaging environment.`}
+      />
+    )
   }
 
   return (

@@ -64,7 +64,15 @@ export function useMessages(conversationId: string): UseMessagesReturn {
 
       if (error) throw error
 
-      setMessages(conversationId, (data ?? []) as Message[])
+      const processed = (data ?? []).map((m: any) => ({
+        ...m,
+        attachments:
+          m.attachments && m.attachments.length > 0
+            ? m.attachments
+            : m.metadata?.attachments || [],
+      }))
+
+      setMessages(conversationId, processed as Message[])
     } catch (err) {
       console.error('[useMessages] fetchMessages error:', err)
     } finally {
@@ -112,7 +120,14 @@ export function useMessages(conversationId: string): UseMessagesReturn {
             .single()
 
           if (data) {
-            addMessage(conversationId, data as Message)
+            const finalMessage = {
+              ...data,
+              attachments:
+                data.attachments && data.attachments.length > 0
+                  ? data.attachments
+                  : data.metadata?.attachments || [],
+            }
+            addMessage(conversationId, finalMessage as Message)
             markAsRead()
           }
         }
@@ -249,6 +264,11 @@ export function useMessages(conversationId: string): UseMessagesReturn {
       }
 
       // Normal message
+      const messageMetadata = {
+        ...(payload.metadata || {}),
+        ...(payload.attachments?.length ? { attachments: payload.attachments } : {}),
+      }
+
       const { data: msg, error } = await supabase
         .from('messages')
         .insert({
@@ -257,7 +277,7 @@ export function useMessages(conversationId: string): UseMessagesReturn {
           content: payload.content,
           type: payload.type ?? 'text',
           reply_to_id: payload.reply_to_id ?? null,
-          metadata: payload.metadata ?? null,
+          metadata: Object.keys(messageMetadata).length ? messageMetadata : null,
         })
         .select('*')
         .single()
@@ -267,21 +287,42 @@ export function useMessages(conversationId: string): UseMessagesReturn {
         return
       }
 
-      // If there are attachments, insert them
-      if (payload.attachments?.length && msg) {
-        const { data: insertedAtts, error: attError } = await supabase
-          .from('file_attachments')
-          .insert(
-            payload.attachments.map((att) => ({ ...att, message_id: msg.id }))
-          )
-          .select('*')
+      // Optimistically add to store immediately so user sees their media without delay
+      const optimisticMessage: Message = {
+        ...msg,
+        sender: {
+          id: user.id,
+          username: user.user_metadata?.username || user.email?.split('@')[0] || 'User',
+          full_name: user.user_metadata?.full_name || 'User',
+          avatar_url: user.user_metadata?.avatar_url || null,
+        } as any,
+        reactions: [],
+        attachments: (payload.attachments || []).map((att, i) => ({
+          id: `temp-${Date.now()}-${i}`,
+          message_id: msg.id,
+          created_at: new Date().toISOString(),
+          ...att,
+        })),
+      }
+      addMessage(conversationId, optimisticMessage)
 
-        if (attError) {
-          console.error('[useMessages] file_attachments insert error:', attError)
-        } else if (insertedAtts?.length) {
-          updateMessage(conversationId, msg.id, {
-            attachments: insertedAtts as any,
-          })
+      // If there are attachments, persist them to file_attachments table
+      if (payload.attachments?.length && msg) {
+        try {
+          const { data: insertedAtts, error: attError } = await supabase
+            .from('file_attachments')
+            .insert(
+              payload.attachments.map((att) => ({ ...att, message_id: msg.id }))
+            )
+            .select('*')
+
+          if (!attError && insertedAtts?.length) {
+            updateMessage(conversationId, msg.id, {
+              attachments: insertedAtts as any,
+            })
+          }
+        } catch (attCatchErr) {
+          console.warn('[useMessages] file_attachments insert failed, using metadata fallback', attCatchErr)
         }
       }
     },

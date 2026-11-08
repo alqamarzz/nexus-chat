@@ -130,12 +130,38 @@ export const useChatStore = create<ChatState>()(
 
       addMessage: (conversationId, message) =>
         set(
-          (state) => ({
-            messages: {
-              ...state.messages,
-              [conversationId]: [...(state.messages[conversationId] || []), message],
-            },
-          }),
+          (state) => {
+            const currentList = state.messages[conversationId] || []
+            const existingIndex = currentList.findIndex((m) => m.id === message.id)
+
+            if (existingIndex >= 0) {
+              const updated = [...currentList]
+              const existing = updated[existingIndex]
+              updated[existingIndex] = {
+                ...existing,
+                ...message,
+                attachments:
+                  message.attachments?.length
+                    ? message.attachments
+                    : existing.attachments?.length
+                    ? existing.attachments
+                    : message.metadata?.attachments || [],
+              }
+              return {
+                messages: {
+                  ...state.messages,
+                  [conversationId]: updated,
+                },
+              }
+            }
+
+            return {
+              messages: {
+                ...state.messages,
+                [conversationId]: [...currentList, message],
+              },
+            }
+          },
           false,
           'addMessage'
         ),

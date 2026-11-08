@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
+import fs from 'fs'
+import path from 'path'
 
 export async function POST(req: NextRequest) {
   try {
@@ -23,14 +25,25 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'File size exceeds 50MB limit' }, { status: 400 })
     }
 
-    const fileExt = file.name.split('.').pop() || 'bin'
-    const cleanFileName = file.name.replace(/[^a-zA-Z0-9._-]/g, '_')
-    const storagePath = `${fallbackUserId}/${Date.now()}-${cleanFileName}`
+    const timestamp = Date.now()
+    const rawClean = file.name.replace(/[^a-zA-Z0-9._-]/g, '_')
+    const fileName = `${timestamp}-${rawClean}`
+    const storagePath = `${fallbackUserId}/${fileName}`
 
+    const detectedMime =
+      file.type ||
+      (file.name.match(/\.(png|jpe?g|gif|webp|svg)$/i)
+        ? `image/${file.name.split('.').pop()?.toLowerCase() === 'jpg' ? 'jpeg' : file.name.split('.').pop()?.toLowerCase()}`
+        : file.name.match(/\.(mp4|webm|mov|mkv)$/i)
+        ? 'video/mp4'
+        : 'application/octet-stream')
+
+    const fileBuffer = Buffer.from(await file.arrayBuffer())
+
+    // 1. Try Supabase Storage first if admin or client is available
     const adminClient = createAdminClient()
     const clientToUse = adminClient || supabase
 
-    // If admin client is available, make sure attachments bucket exists
     if (adminClient) {
       try {
         const { data: bucket } = await adminClient.storage.getBucket('attachments')
@@ -41,58 +54,58 @@ export async function POST(req: NextRequest) {
           })
         }
       } catch {
-        // Continue if check fails
+        // Bucket creation check failed, proceed
       }
     }
 
-    // Attempt Supabase Storage upload
-    const { data, error } = await clientToUse.storage
-      .from('attachments')
-      .upload(storagePath, file, {
-        cacheControl: '3600',
-        upsert: true,
-        contentType: file.type || 'application/octet-stream',
-      })
-
-    if (!error && data?.path) {
-      const { data: publicUrlData } = clientToUse.storage
+    try {
+      const { data: storageData, error: storageError } = await clientToUse.storage
         .from('attachments')
-        .getPublicUrl(data.path)
+        .upload(storagePath, fileBuffer, {
+          cacheControl: '3600',
+          upsert: true,
+          contentType: detectedMime,
+        })
 
-      return NextResponse.json({
-        url: publicUrlData.publicUrl,
-        name: file.name,
-        size: file.size,
-        mime_type: file.type || (file.name.match(/\.(mp4|webm|mov|mkv)$/i) ? 'video/mp4' : 'image/jpeg'),
-      })
+      if (!storageError && storageData?.path) {
+        const { data: publicUrlData } = clientToUse.storage
+          .from('attachments')
+          .getPublicUrl(storageData.path)
+
+        if (publicUrlData?.publicUrl) {
+          return NextResponse.json({
+            url: publicUrlData.publicUrl,
+            name: file.name,
+            size: file.size,
+            mime_type: detectedMime,
+          })
+        }
+      }
+    } catch {
+      // Supabase Storage upload failed, fallback to local storage
     }
 
-    // If Supabase Storage failed (e.g. bucket doesn't exist yet in user's project),
-    // fallback gracefully to base64 Data URL for files up to 10MB so chat never breaks:
-    if (file.size <= 10 * 1024 * 1024) {
-      const arrayBuffer = await file.arrayBuffer()
-      const buffer = Buffer.from(arrayBuffer)
-      const mimeType = file.type || (file.name.match(/\.(mp4|webm|mov|mkv)$/i) ? 'video/mp4' : 'image/jpeg')
-      const base64 = buffer.toString('base64')
-      const dataUrl = `data:${mimeType};base64,${base64}`
-
-      return NextResponse.json({
-        url: dataUrl,
-        name: file.name,
-        size: file.size,
-        mime_type: mimeType,
-        isFallback: true,
-      })
+    // 2. Reliable Local Storage Fallback: Save file to public/uploads
+    const uploadsDir = path.join(process.cwd(), 'public', 'uploads')
+    if (!fs.existsSync(uploadsDir)) {
+      fs.mkdirSync(uploadsDir, { recursive: true })
     }
 
-    return NextResponse.json(
-      {
-        error: error?.message || 'Storage bucket not available. Please create the attachments bucket in Supabase.',
-      },
-      { status: 500 }
-    )
+    const localFilePath = path.join(uploadsDir, fileName)
+    await fs.promises.writeFile(localFilePath, fileBuffer)
+
+    // Return the clean, lightweight URL
+    const fileUrl = `/api/uploads/${fileName}`
+
+    return NextResponse.json({
+      url: fileUrl,
+      name: file.name,
+      size: file.size,
+      mime_type: detectedMime,
+    })
   } catch (error: unknown) {
     const message = error instanceof Error ? error.message : 'Upload failed'
+    console.error('Upload handler error:', message)
     return NextResponse.json({ error: message }, { status: 500 })
   }
 }

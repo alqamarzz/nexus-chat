@@ -3,6 +3,7 @@
 import { createContext, useContext, useEffect, ReactNode } from 'react'
 import { useChatStore } from '@/stores/chat-store'
 import { useAuth } from '@/hooks/useAuth'
+import { AuthTransitionScreen } from '@/components/ui/AuthTransitionScreen'
 
 interface ChatContextValue {
   isReady: boolean
@@ -20,8 +21,18 @@ export function ChatProvider({ children }: { children: ReactNode }) {
     }
   }, [profile, setCurrentUser])
 
+  if (isLoading) {
+    return (
+      <AuthTransitionScreen
+        mode="login"
+        title="Loading Nexus Chat..."
+        subtitle="Connecting to encrypted realtime channels and restoring your workspace..."
+      />
+    )
+  }
+
   return (
-    <ChatContext.Provider value={{ isReady: !isLoading }}>
+    <ChatContext.Provider value={{ isReady: true }}>
       {children}
     </ChatContext.Provider>
   )

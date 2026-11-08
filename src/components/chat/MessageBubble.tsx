@@ -130,57 +130,82 @@ export function MessageBubble({
           ) : (
             <>
               {/* Attachments */}
-              {message.attachments && message.attachments.length > 0 && (
-                <div className="mb-2 space-y-2">
-                  {message.attachments.map((att) => (
-                    <div key={att.id} className="overflow-hidden rounded-lg">
-                      {isImageFile(att.mime_type) ? (
-                        <a href={att.url} target="_blank" rel="noopener noreferrer" className="block">
-                          <img
-                            src={att.url}
-                            alt={att.name}
-                            className="max-h-72 w-auto max-w-full rounded-lg object-contain bg-black/20 hover:opacity-95 transition-opacity"
-                            loading="lazy"
-                          />
-                        </a>
-                      ) : isVideoFile(att.mime_type) ? (
-                        <div className="rounded-lg overflow-hidden bg-black/40 max-w-full">
-                          <video
-                            src={att.url}
-                            controls
-                            preload="metadata"
-                            playsInline
-                            className="max-h-80 w-auto max-w-full rounded-lg"
-                          />
+              {(() => {
+                const attachments =
+                  message.attachments && message.attachments.length > 0
+                    ? message.attachments
+                    : (message.metadata?.attachments as any[]) || []
+
+                if (!attachments || attachments.length === 0) return null
+
+                return (
+                  <div className="mb-2 space-y-2">
+                    {attachments.map((att: any, idx: number) => {
+                      const isImg = isImageFile(att.mime_type, att.url || att.name)
+                      const isVid = isVideoFile(att.mime_type, att.url || att.name)
+
+                      return (
+                        <div key={att.id || att.url || idx} className="overflow-hidden rounded-lg">
+                          {isImg ? (
+                            <a href={att.url} target="_blank" rel="noopener noreferrer" className="block">
+                              <img
+                                src={att.url}
+                                alt={att.name || 'Image'}
+                                className="max-h-72 w-auto max-w-full rounded-lg object-contain bg-black/20 hover:opacity-95 transition-opacity"
+                                loading="lazy"
+                              />
+                            </a>
+                          ) : isVid ? (
+                            <div className="rounded-lg overflow-hidden bg-black/40 max-w-full">
+                              <video
+                                src={att.url}
+                                controls
+                                preload="metadata"
+                                playsInline
+                                className="max-h-80 w-auto max-w-full rounded-lg"
+                              />
+                            </div>
+                          ) : (
+                            <a
+                              href={att.url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="flex items-center gap-3 p-2.5 rounded-lg bg-black/20 hover:bg-black/30 transition-colors"
+                            >
+                              <FileText className="w-6 h-6 text-indigo-400 shrink-0" />
+                              <div className="flex-1 min-w-0">
+                                <p className="text-xs font-medium text-white truncate">{att.name}</p>
+                                <p className="text-[10px] text-slate-400">{formatFileSize(att.size || 0)}</p>
+                              </div>
+                              <Download className="w-4 h-4 text-slate-400" />
+                            </a>
+                          )}
                         </div>
-                      ) : (
-                        <a
-                          href={att.url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="flex items-center gap-3 p-2.5 rounded-lg bg-black/20 hover:bg-black/30 transition-colors"
-                        >
-                          <FileText className="w-6 h-6 text-indigo-400 shrink-0" />
-                          <div className="flex-1 min-w-0">
-                            <p className="text-xs font-medium text-white truncate">{att.name}</p>
-                            <p className="text-[10px] text-slate-400">{formatFileSize(att.size)}</p>
-                          </div>
-                          <Download className="w-4 h-4 text-slate-400" />
-                        </a>
-                      )}
-                    </div>
-                  ))}
-                </div>
-              )}
+                      )
+                    })}
+                  </div>
+                )
+              })()}
 
               {/* Text Content (hide if only a fallback filename placeholder for the attachment) */}
-              {Boolean(
-                message.content &&
-                  (!message.attachments?.length ||
-                    !message.attachments.some(
-                      (att) => att.name === message.content || message.content === 'Media attachment'
-                    ))
-              ) && <div className="whitespace-pre-wrap">{message.content}</div>}
+              {(() => {
+                const attachments =
+                  message.attachments && message.attachments.length > 0
+                    ? message.attachments
+                    : (message.metadata?.attachments as any[]) || []
+
+                const shouldHideContent =
+                  attachments.length > 0 &&
+                  attachments.some(
+                    (att: any) =>
+                      att.name === message.content ||
+                      message.content === 'Media attachment' ||
+                      att.url === message.content
+                  )
+
+                if (!message.content || shouldHideContent) return null
+                return <div className="whitespace-pre-wrap">{message.content}</div>
+              })()}
 
               {/* Message Footer Info */}
               <div

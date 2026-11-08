@@ -54,19 +54,23 @@ export function formatFileSize(bytes: number): string {
 }
 
 /**
- * Returns true if the given MIME type represents an image file.
+ * Returns true if the given MIME type or file name/URL represents an image file.
  */
-export function isImageFile(mimeType?: string | null): boolean {
-  if (!mimeType) return false
-  return mimeType.startsWith('image/')
+export function isImageFile(mimeType?: string | null, urlOrName?: string | null): boolean {
+  if (mimeType && mimeType.startsWith('image/')) return true
+  if (urlOrName && /\.(png|jpe?g|gif|webp|svg|avif|bmp)(\?.*)?$/i.test(urlOrName)) return true
+  if (mimeType && /\.(png|jpe?g|gif|webp|svg|avif|bmp)$/i.test(mimeType)) return true
+  return false
 }
 
 /**
- * Returns true if the given MIME type represents a video file.
+ * Returns true if the given MIME type or file name/URL represents a video file.
  */
-export function isVideoFile(mimeType?: string | null): boolean {
-  if (!mimeType) return false
-  return mimeType.startsWith('video/')
+export function isVideoFile(mimeType?: string | null, urlOrName?: string | null): boolean {
+  if (mimeType && mimeType.startsWith('video/')) return true
+  if (urlOrName && /\.(mp4|webm|mov|mkv|avi|m4v)(\?.*)?$/i.test(urlOrName)) return true
+  if (mimeType && /\.(mp4|webm|mov|mkv|avi|m4v)$/i.test(mimeType)) return true
+  return false
 }
 
 /**

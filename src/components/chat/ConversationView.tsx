@@ -234,8 +234,8 @@ export function ConversationView() {
           return
         }
 
-        const hasVideo = uploadedAttachments.some((att) => isVideoFile(att.mime_type))
-        const hasImage = uploadedAttachments.some((att) => isImageFile(att.mime_type))
+        const hasVideo = uploadedAttachments.some((att) => isVideoFile(att.mime_type, att.url || att.name))
+        const hasImage = uploadedAttachments.some((att) => isImageFile(att.mime_type, att.url || att.name))
         messageType = hasVideo ? 'file' : hasImage ? 'image' : 'file'
       }
 

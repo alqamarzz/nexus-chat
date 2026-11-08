@@ -8,6 +8,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { toast } from 'sonner'
 import { createClient } from '@/lib/supabase/client'
+import { AuthTransitionScreen } from '@/components/ui/AuthTransitionScreen'
 
 // ─── Schema ───────────────────────────────────────────────────────────────────
 
@@ -87,6 +88,8 @@ export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [isGoogleLoading, setIsGoogleLoading] = useState(false)
+  const [isTransitioning, setIsTransitioning] = useState(false)
+  const [userEmail, setUserEmail] = useState('')
 
   const {
     register,
@@ -104,13 +107,13 @@ export default function LoginPage() {
         password: data.password,
       })
       if (error) throw error
+      setUserEmail(data.email)
+      setIsTransitioning(true)
       toast.success('Welcome back!')
-      router.push('/chat')
-      router.refresh()
+      window.location.href = '/chat'
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : 'Failed to sign in'
       toast.error(message)
-    } finally {
       setIsLoading(false)
     }
   }
@@ -130,6 +133,16 @@ export default function LoginPage() {
       toast.error(message)
       setIsGoogleLoading(false)
     }
+  }
+
+  if (isTransitioning) {
+    return (
+      <AuthTransitionScreen
+        mode="login"
+        title="Signing into Nexus..."
+        subtitle={`Welcome back, ${userEmail || 'User'}! Loading your messages and conversations.`}
+      />
+    )
   }
 
   return (
