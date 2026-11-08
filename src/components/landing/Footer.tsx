@@ -3,7 +3,6 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { MessageSquare, ArrowRight } from 'lucide-react';
-import { BeanBagCoder } from '@/components/ui/BeanBagCoder';
 
 const footerLinks = {
   Product: [
@@ -65,15 +64,10 @@ export default function Footer() {
               </p>
             </div>
 
-            {/* Scrolltide Bean Bag Nap Animated Coder */}
-            <div className="my-2">
-              <BeanBagCoder size="sm" showStickyNote={true} stickyText="Shipping... between naps." />
-            </div>
-
             {/* Social links */}
             <div className="flex items-center gap-3 mt-4">
               <a
-                href="https://github.com"
+                href="https://github.com/alqamarzz"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-9 h-9 rounded-xl border border-stone-300 dark:border-[#1e1e2e] bg-stone-100 dark:bg-[#111118] flex items-center justify-center text-slate-600 dark:text-gray-500 hover:text-slate-900 dark:hover:text-white hover:border-indigo-500/40 transition-all duration-200"
@@ -84,7 +78,7 @@ export default function Footer() {
                 </svg>
               </a>
               <a
-                href="https://x.com"
+                href="https://x.com/alqamarzz"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-9 h-9 rounded-xl border border-stone-300 dark:border-[#1e1e2e] bg-stone-100 dark:bg-[#111118] flex items-center justify-center text-slate-600 dark:text-gray-500 hover:text-slate-900 dark:hover:text-white hover:border-indigo-500/40 transition-all duration-200"
@@ -159,12 +153,21 @@ export default function Footer() {
         </div>
 
         {/* Bottom bar */}
-        <div className="pt-8 border-t border-[#1e1e2e] flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p className="text-gray-600 text-sm">
+        <div className="pt-8 border-t border-stone-300 dark:border-[#1e1e2e] flex flex-col sm:flex-row items-center justify-between gap-4">
+          <p className="text-slate-600 dark:text-gray-400 text-sm">
             &copy; 2026 Nexus Chat. All rights reserved.
           </p>
-          <p className="text-gray-700 text-xs">
-            Built with ❤️ using Next.js, Tailwind CSS & Gemini AI
+          <p className="text-slate-600 dark:text-gray-400 text-xs">
+            Crafted by{' '}
+            <a
+              href="https://x.com/alqamarzz"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-semibold text-indigo-600 dark:text-indigo-400 hover:underline"
+            >
+              @alqamarzz
+            </a>{' '}
+            · Built with ❤️ using Next.js & Gemini AI
           </p>
         </div>
       </div>

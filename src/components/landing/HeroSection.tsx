@@ -4,7 +4,6 @@ import { useRef } from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { ArrowDown, Sparkles, MessageCircle, Zap } from 'lucide-react';
-import { BeanBagCoder } from '@/components/ui/BeanBagCoder';
 
 const fakeContacts = [
   { name: 'Sarah K.', color: 'from-pink-500 to-rose-500', lastMsg: 'Hey! Are you free later?', time: '2m' },
@@ -145,16 +144,6 @@ export default function HeroSection() {
           >
             See How It Works
           </button>
-        </motion.div>
-
-        {/* Bean Bag Nap Coder Featured in Hero */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.4 }}
-          className="mb-14 w-full flex justify-center"
-        >
-          <BeanBagCoder size="md" showStickyNote={true} stickyText="Compiling... myself." />
         </motion.div>
 
         {/* Chat Preview Mockup */}

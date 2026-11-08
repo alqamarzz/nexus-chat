@@ -38,6 +38,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Nexus Chat',
     description: 'Real-time messaging with AI superpowers.',
+    creator: '@alqamarzz',
   },
   robots: {
     index: true,
