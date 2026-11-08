@@ -76,7 +76,7 @@ export default function CTASection() {
             </Link>
             <Link
               href="/login"
-              className="inline-flex items-center justify-center gap-2 px-10 py-4 rounded-xl font-bold text-slate-900 dark:text-white text-lg border border-slate-900/20 dark:border-white/20 hover:border-slate-900/40 dark:hover:border-white/40 hover:bg-black/5 dark:hover:bg-white/5 transition-all duration-200"
+              className="inline-flex items-center justify-center gap-2 px-10 py-4 rounded-xl font-bold text-slate-900 dark:text-white text-lg border border-slate-900/20 dark:border-white/20 bg-white/70 dark:bg-transparent hover:border-slate-900/40 dark:hover:border-white/40 hover:bg-white dark:hover:bg-white/5 transition-all duration-200 backdrop-blur-sm shadow-xs"
             >
               Sign In
             </Link>

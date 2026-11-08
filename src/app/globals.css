@@ -1,5 +1,7 @@
 @import 'tailwindcss';
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 /* ============================================================
    Design System Custom Properties
    ============================================================ */
@@ -407,11 +409,11 @@ html.light .border-\[\#1e1e2e\],
 html.light .border-\[\#1e1e2e\]\/60,
 html.light .border-\[\#222232\],
 html.light .border-\[\#242436\] {
-  border-color: #dcd4c8 !important;
+  border-color: #b8aea3 !important;
 }
 
 html.light .border-\[\#2a2a3e\] {
-  border-color: #d0c7bb !important;
+  border-color: #a89e93 !important;
 }
 
 /* Warm text overrides in light mode */
@@ -532,6 +534,31 @@ html.light input.bg-\[\#111118\] {
 /* Message bubbles in light mode */
 html.light .bg-\[\#1e1e2e\] {
   background-color: #e5dfd6 !important;
+}
+
+/* FAQ / Feature cards — make borders more visible in light mode */
+html.light .border-\[\#1e1e2e\],
+html.light .border-\[\#1e1e2e\]\/60,
+html.light .border-\[\#222232\],
+html.light .border-\[\#242436\] {
+  border-color: #b8aea3 !important;
+}
+
+/* Explicit strong text for FAQ questions, chevrons, card text */
+html.light .text-slate-900 {
+  color: #1c1917 !important;
+}
+html.light .text-\[\#1c1917\] {
+  color: #1c1917 !important;
+}
+html.light .text-\[\#44403c\] {
+  color: #44403c !important;
+}
+html.light .text-\[\#57534e\] {
+  color: #57534e !important;
+}
+html.light .text-indigo-600 {
+  color: #4338ca !important;
 }
 
 /* Glassmorphism in light mode */

@@ -51,20 +51,20 @@ function FAQItem({ faq, index }: { faq: typeof faqs[0]; index: number }) {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.4, delay: index * 0.07 }}
-      className="border border-[#1e1e2e] rounded-xl overflow-hidden hover:border-indigo-500/30 transition-colors"
+      className="border border-stone-300/80 dark:border-[#1e1e2e] bg-[#fbf9f5] dark:bg-[#111118] rounded-xl overflow-hidden hover:border-indigo-500/40 transition-all shadow-xs"
     >
       <button
         onClick={() => setOpen(!open)}
-        className="w-full flex items-center justify-between gap-4 px-6 py-4 text-left bg-[#111118] hover:bg-[#111118]/80 transition-colors"
+        className="w-full flex items-center justify-between gap-4 px-6 py-4 text-left bg-transparent hover:bg-black/[0.02] dark:hover:bg-white/[0.02] transition-colors"
         aria-expanded={open}
       >
-        <span className="text-slate-900 dark:text-white font-semibold text-sm sm:text-base">{faq.question}</span>
+        <span className="text-slate-950 dark:text-white font-semibold text-sm sm:text-base">{faq.question}</span>
         <motion.div
           animate={{ rotate: open ? 180 : 0 }}
           transition={{ duration: 0.25 }}
           className="flex-shrink-0"
         >
-          <ChevronDown className={`w-5 h-5 transition-colors ${open ? 'text-indigo-600 dark:text-indigo-400' : 'text-slate-500 dark:text-gray-500'}`} />
+          <ChevronDown className={`w-5 h-5 transition-colors ${open ? 'text-indigo-600 dark:text-indigo-400' : 'text-slate-700 dark:text-gray-400'}`} />
         </motion.div>
       </button>
 
@@ -76,8 +76,8 @@ function FAQItem({ faq, index }: { faq: typeof faqs[0]; index: number }) {
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.3, ease: 'easeInOut' }}
           >
-            <div className="px-6 pb-5 pt-1 bg-[#111118]">
-              <div className="h-px bg-[#1e1e2e] mb-4" />
+            <div className="px-6 pb-5 pt-1 bg-transparent">
+              <div className="h-px bg-stone-300/60 dark:bg-[#1e1e2e] mb-4" />
               <p className="text-slate-700 dark:text-gray-400 text-sm leading-relaxed">{faq.answer}</p>
             </div>
           </motion.div>

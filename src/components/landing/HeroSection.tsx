@@ -141,7 +141,7 @@ export default function HeroSection() {
             onClick={() => {
               document.getElementById('how-it-works')?.scrollIntoView({ behavior: 'smooth' });
             }}
-            className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl font-semibold text-slate-800 dark:text-white border border-slate-800/20 dark:border-white/20 hover:border-slate-800/40 dark:hover:border-white/40 hover:bg-black/5 dark:hover:bg-white/5 transition-all duration-200"
+            className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl font-semibold text-slate-900 dark:text-white border border-slate-900/25 dark:border-white/20 bg-white/70 dark:bg-transparent hover:border-slate-900/40 dark:hover:border-white/40 hover:bg-white dark:hover:bg-white/5 transition-all duration-200 backdrop-blur-sm shadow-xs"
           >
             See How It Works
           </button>
